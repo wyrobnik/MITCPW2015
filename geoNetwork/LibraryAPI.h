@@ -21,6 +21,10 @@ typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 
 //Event (depends on eventClass selected)
 @property (strong, nonatomic, readonly) NSArray* events;
+
+@property (strong, nonatomic, readonly) NSMutableDictionary* eventSections;
+@property (strong, nonatomic, readonly) NSArray *sortedEventSections;
+
 @property (strong, nonatomic) EventsQueryConstraints* eventsQueryConstraints;
 
 

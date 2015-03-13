@@ -300,7 +300,7 @@
                                     self.navigationController.navigationBar.frame.origin.y +
                                     self.datepicker.frame.size.height +(datepickerOpen)*44,
                                     containerFrame.size.width,
-                                    containerFrame.size.height //8-(-1+2*datepickerOpen)*44
+                                    containerFrame.size.height - (-1+2*datepickerOpen)*44
                                     );
         self.containerViewController.view.frame = containerFrame;
         self.currentVC.view.frame = self.containerViewController.view.bounds;

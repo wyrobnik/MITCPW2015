@@ -9,12 +9,12 @@
 #import "EventsTableViewController.h"
 #import "LibraryAPI.h"
 #import "EventTableViewCell.h"
-#import "UIImageView+WebCache.h"
 #import "EventDetailViewController.h"
 
 @interface EventsTableViewController ()
 
 @property (strong, nonatomic) LibraryAPI* api;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -46,6 +46,9 @@
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
     //TODO: If no data/count 0, then handle
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"EEE hh:mm aaa"];
 }
 
 //This is called when class is notified of reloaded event data
@@ -64,14 +67,20 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return [LibraryAPI sharedInstance].sortedEventSections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.api.events count];
+    NSDate *key = [self.api.sortedEventSections objectAtIndex:section];
+    NSArray *eventsArray = [self.api.eventSections objectForKey:key];
+    return [eventsArray count];
     
+}
+
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [self.dateFormatter stringFromDate:[[LibraryAPI sharedInstance].sortedEventSections objectAtIndex:section]];
 }
 
 
@@ -86,14 +95,16 @@
         cell = [tableView dequeueReusableCellWithIdentifier:eventsTableCellIdentifier];
     }
     
-    if ([[self.api.events objectAtIndex:indexPath.row] isKindOfClass:[Event class]]) {
-        Event *event = [self.api.events objectAtIndex:indexPath.row];
-        
-        cell.title.text = event.title;
-        cell.filterTags.text = [event.filters componentsJoinedByString:@", "];
-        cell.address.text = event.venue;
-        [cell.imageView sd_setImageWithURL:event.icon_url placeholderImage:[UIImage imageNamed:@"MITEngineersLogo"]];
-    }
+    NSDate *key = [self.api.sortedEventSections objectAtIndex:indexPath.section];
+    NSArray *eventsArray = [self.api.eventSections objectForKey:key];
+    Event *event = [eventsArray objectAtIndex:indexPath.row];
+    
+    cell.title.text = event.title;
+    cell.filterTags.text = [event.filters componentsJoinedByString:@", "];
+    cell.address.text = event.venue;
+    
+    cell.timeLable.text = [NSString stringWithFormat:@"%@ - %@", [self.dateFormatter stringFromDate:event.startTime], [self.dateFormatter stringFromDate:event.endTime]];
+
     return cell;
 }
 

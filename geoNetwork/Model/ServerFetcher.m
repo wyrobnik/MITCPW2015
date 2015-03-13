@@ -73,26 +73,5 @@
     [ServerFetcher makePostRequestWithUrlExtension:urlExtension withPostDictionary:postDictionary withCallback:callback];
 }
 
-# pragma mark - user
-
-+(void)updateTownbillyUserIdFromFbUserId:(NSString *)fbUserId {
-    
-    NSString *urlExtension = @"auth/facebook_auth.php";
-    NSDictionary *postParams =  @{
-                                FACEBOOK_ID : fbUserId
-                                };
-    [ServerFetcher makePostRequestWithUrlExtension:urlExtension withPostDictionary:postParams withCallback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            //TODO handle error
-        } else {
-            id queryResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-            NSString *townbillyUserId = [queryResponse valueForKey:TOWNBILLY_ID];
-            NSLog(@"Townbilly User = %@", townbillyUserId);
-            [[Settings sharedInstance] setTownbillyUserId:townbillyUserId];
-        }
-    }];
-    
-}
 
 @end

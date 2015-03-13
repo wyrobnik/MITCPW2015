@@ -9,7 +9,7 @@
         <scene sceneID="3A0-is-1KA">
             <objects>
                 <tableViewController storyboardIdentifier="eventsTableVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kO1-09-6vz" userLabel="Events Table View Controller" customClass="EventsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="myE-jc-OKg">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="86" sectionHeaderHeight="22" sectionFooterHeight="22" id="myE-jc-OKg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -299,7 +299,7 @@
             <objects>
                 <viewController storyboardIdentifier="settingsViewController" id="ARo-ak-nlk" customClass="SettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uZX-sA-2yV">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -358,7 +358,7 @@
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="256" height="568"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31p-Eg-6H6">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="31p-Eg-6H6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -376,7 +376,7 @@
             <objects>
                 <navigationController storyboardIdentifier="settingsViewControllerNavigation" automaticallyAdjustsScrollViewInsets="NO" id="3b0-tL-ONu" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SRi-tG-VNL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="SRi-tG-VNL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1450980392" green="0.63137254899999995" blue="0.40784313729999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -18,10 +18,12 @@
 @interface LibraryAPI ()
 
 @property (strong, nonatomic, readwrite) NSArray *events;
+@property (strong, nonatomic, readwrite) NSMutableDictionary* eventSections;
 
 //For quick switch!
 @property (strong, nonatomic) NSArray *discoverEventsArray;
 @property (strong, nonatomic) NSArray *bookmarkedEventsArray;
+//TODO add dictionary for quick switch
 
 @end
 
@@ -128,6 +130,42 @@
     return arrayOfEvents;
 }
 
+// This creates a dictionary of array of events, by starttime hour
+-(NSMutableDictionary*)eventSectionsDictionaryFromSortedArray:(NSArray*)eventsArray {
+    NSMutableDictionary *output = [[NSMutableDictionary alloc] init];
+    
+    for (Event *event in eventsArray) {
+        NSDate *dateRepresentingThisHour = [self dateAtBeginningOfHourForDate:event.startTime];
+    
+        NSMutableArray *eventsOnThisDay = [output objectForKey:dateRepresentingThisHour];
+        if (eventsOnThisDay == nil) {
+            eventsOnThisDay = [NSMutableArray array];
+            
+            // Use the reduced date as dictionary key to later retrieve the event list this day
+            [output setObject:eventsOnThisDay forKey:dateRepresentingThisHour];
+        }
+        
+        // Add the event to the list for this day
+        [eventsOnThisDay addObject:event];
+        
+    }
+    
+    return output;
+}
+
+-(NSDate*)dateAtBeginningOfHourForDate:(NSDate*)inputDate {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    // Selectively convert the date components (year, month, day) of the input date
+    NSDateComponents *dateComps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit fromDate:inputDate];
+    [dateComps setMinute:0];
+    [dateComps setSecond:0];
+    
+    NSDate *outputDate = [calendar dateFromComponents:dateComps];
+    return outputDate;
+}
+
+
 
 /*
  * Reload events data (with set parameters)
@@ -175,8 +213,13 @@
 
 -(void)setEvents:(NSArray *)events {
     _events = events;
+    //set sections dictionary
+    [self setEventSections:[self eventSectionsDictionaryFromSortedArray:_events]];
     //Notify observers of events changed!
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EventsChangedNotification" object:self];
+    
+
+    
 }
 
 -(void)setEventClass:(EventsDiscoveryBookmarkedFollowed)eventClass {
@@ -197,6 +240,11 @@
     }
     [self reloadEventsWithErrorHandler:target selector:selector];  //TODO: Reload discovery and following after time period
                                                             // TODO handle error connection
+}
+
+-(void)setEventSections:(NSMutableDictionary *)eventSections {
+    _eventSections = eventSections;
+    _sortedEventSections = [[_eventSections allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
 @end

@@ -30,9 +30,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    self.navigationItem.title = self.event.title;
-//    self.navigationItem.title = @"townbilly";
-    
     self.eventTitle.text = self.event.title;
 //    self.eventStartTime.text = self.event.startTime;
 //    self.eventEndTime.text = self.event.endTime;

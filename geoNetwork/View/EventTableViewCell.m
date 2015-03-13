@@ -20,21 +20,10 @@
     // Configure the view for the selected state
 }
 
-@synthesize imageView = _imageView;
 @synthesize title = _title;
 @synthesize filterTags = _filterTags;
 @synthesize address = _address;
 
-
--(UIImageView*)imageView {
-    //Allocated from storyboard, don't need to allocate here
-    _imageView.layer.cornerRadius = 9;
-    _imageView.layer.masksToBounds = YES;
-    _imageView.layer.borderColor = [[UIColor blackColor] CGColor];
-    _imageView.layer.borderWidth = 1.0;
-    
-    return _imageView;
-}
 
 
 @end
