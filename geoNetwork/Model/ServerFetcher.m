@@ -20,7 +20,7 @@
 @implementation ServerFetcher
 
 //General function to make post request and on completion calls callback block
-+(void)makePostRequestWithUrlExtension:(NSString*)urlExtension withPostDictionary:(NSDictionary*)postDictionary withCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback {
++(void)makeRequestWithUrlExtension:(NSString*)urlExtension isPost:(BOOL)isPost withPostDictionary:(NSDictionary*)postDictionary withCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback {
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject delegate:nil delegateQueue: [NSOperationQueue mainQueue]];
@@ -28,17 +28,29 @@
     NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", TOWNBILLY_REQUEST_URL, urlExtension]];
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:url];
     
-    [urlRequest setHTTPMethod:@"POST"];
-    
     NSError *error = nil;
-    NSData *post = [NSJSONSerialization dataWithJSONObject:postDictionary options:kNilOptions error:&error];
+    if (isPost) {
+        [urlRequest setHTTPMethod:@"POST"];
+        
+        NSData *post = [NSJSONSerialization dataWithJSONObject:postDictionary options:kNilOptions error:&error];
+        [urlRequest setHTTPBody:post];
+        
+    } else {
+        [urlRequest setHTTPMethod:@"GET"];
+    }
     
-    [urlRequest setHTTPBody:post];
     if (!error) {
         NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:urlRequest
-                                                        completionHandler:callback];
+                                                            completionHandler:callback];
         [dataTask resume];
     }
+}
+
+
+// Init request (filters)
++(void)initRequestwithCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback {
+    NSString *urlExtension = @"init.php";
+    [ServerFetcher makeRequestWithUrlExtension:urlExtension isPost:NO withPostDictionary:nil withCallback:callback];
 }
 
 #pragma mark - fetch Events
@@ -60,7 +72,7 @@
  */
 +(void)fetchEventsArrayWithConstraints:(NSDictionary*)constraints withCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback {
     NSString *urlExtension = @"event_request.php";
-    [ServerFetcher makePostRequestWithUrlExtension:urlExtension withPostDictionary:constraints withCallback:callback];
+    [ServerFetcher makeRequestWithUrlExtension:urlExtension isPost:YES withPostDictionary:constraints withCallback:callback];
     
 }
 
@@ -70,7 +82,7 @@
     NSDictionary *postDictionary = @{
                                      EVENTS_LIST : [[eventIds allObjects] componentsJoinedByString:@","]
                                      };
-    [ServerFetcher makePostRequestWithUrlExtension:urlExtension withPostDictionary:postDictionary withCallback:callback];
+    [ServerFetcher makeRequestWithUrlExtension:urlExtension isPost:YES withPostDictionary:postDictionary withCallback:callback];
 }
 
 

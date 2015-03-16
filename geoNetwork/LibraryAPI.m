@@ -13,7 +13,7 @@
 #define BOOKMARKED_EVENTS_KEY @"bookmarkedEvents"
 #define STATUS_KEY @"status"
 
-#define BUSINESSID_KEY @"business_id"
+#define FILTERS_KEY @"filters"
 
 @interface LibraryAPI ()
 
@@ -36,6 +36,14 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _obj = [[LibraryAPI alloc] init];
+        
+        // Make server init call to get filter tags
+        [ServerFetcher initRequestwithCallback:^(NSData *data, NSURLResponse *response, NSError *error) {
+            NSDictionary *filtersDic = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:FILTERS_KEY];
+            NSLog(@"Filters = %@", filtersDic);
+            [EventsQueryConstraints setFilterTags:[[filtersDic allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
+        }];
+        
     });
     return _obj;
 }
@@ -109,16 +117,6 @@
     }
     [userDefaults setObject:data forKey:BOOKMARKED_EVENTS_KEY];
     [userDefaults synchronize];
-}
-
-
--(NSMutableArray*)extractArrayOfBusinessIds:(NSArray*)arrayOfJsonBusinesses {
-    NSMutableArray *arrayOfBusinesses = [[NSMutableArray alloc] initWithCapacity:[arrayOfJsonBusinesses count]];
-    for (NSUInteger i = 0; i < [arrayOfJsonBusinesses count]; i++) {
-        id businessId = [[arrayOfJsonBusinesses objectAtIndex:i] valueForKey:BUSINESSID_KEY];
-        [arrayOfBusinesses addObject:[NSString stringWithFormat:@"%@",businessId]]; //Make sure it is string
-    }
-    return arrayOfBusinesses;
 }
 
 

@@ -48,7 +48,7 @@
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     [self.tableView setContentInset:UIEdgeInsetsMake(customNavigationBar.frame.size.height, 0, 0, 0)];
     
-    [self.tableView setScrollEnabled:NO];
+//    [self.tableView setScrollEnabled:NO];
     
     
     // Uncomment the following line to preserve selection between presentations.

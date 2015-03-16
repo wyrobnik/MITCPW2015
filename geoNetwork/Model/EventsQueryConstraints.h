@@ -27,6 +27,7 @@ struct DistanceFromLocationStruct {
 @property (nonatomic) struct DistanceFromLocationStruct distanceFromLocation;
 
 +(NSArray*)filterTags;
++(void)setFilterTags:(NSArray*)filterTags;
 
 -(NSDictionary*)eventConstraintDictionary;
 

@@ -21,19 +21,14 @@
 @implementation EventsQueryConstraints
 
 
+//STATIC filterTags
+static NSArray *filterTags;
 +(NSArray*)filterTags {
-    static NSArray *output;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        output = @[@"Free",
-                   @"Outdoors & Public Events",
-                   @"Live Shows",
-                   @"Exhibits/Educational",
-                   @"Foody",
-                   @"Bars",
-                   @"Clubs & Concerts"];
-    });
-    return output;
+    { @synchronized(self) { return filterTags; } }
+}
+
++(void)setFilterTags:(NSArray *)val {
+    { @synchronized(self) { filterTags = val; } }
 }
 
 - (instancetype)init

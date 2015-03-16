@@ -13,6 +13,7 @@
 +(void)fetchEventsArrayWithConstraints:(NSDictionary*)constraints withCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback;
 +(void)fetchListOfEvents:(NSSet*)eventIds withCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback;
 
++(void)initRequestwithCallback:(void (^)(NSData *data, NSURLResponse *response, NSError *error))callback;
 
 
 @end

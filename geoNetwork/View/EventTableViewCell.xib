@@ -23,7 +23,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qF-8V-D3I">
-                        <rect key="frame" x="8" y="44" width="304" height="19"/>
+                        <rect key="frame" x="27" y="44" width="285" height="19"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="19" id="mow-UN-uty"/>
                         </constraints>
@@ -47,6 +47,12 @@
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2au-an-3ag">
+                        <rect key="frame" x="8" y="46" width="15" height="15"/>
+                        <state key="normal" image="CalendarIcon">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="MmU-qD-P8K" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="7WF-3U-wzG"/>
@@ -60,7 +66,7 @@
                     <constraint firstAttribute="bottom" secondItem="ZnY-b2-0r7" secondAttribute="bottom" constant="8" id="gNr-VQ-cN3"/>
                     <constraint firstItem="6vw-F7-9qv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="p9o-Na-kW7"/>
                     <constraint firstAttribute="trailing" secondItem="6vw-F7-9qv" secondAttribute="trailing" constant="8" id="v8R-KB-1VT"/>
-                    <constraint firstItem="6qF-8V-D3I" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="vFg-f7-QAe"/>
+                    <constraint firstItem="6qF-8V-D3I" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="27" id="vFg-f7-QAe"/>
                     <constraint firstAttribute="trailing" secondItem="MmU-qD-P8K" secondAttribute="trailing" constant="8" id="zfO-95-7IS"/>
                 </constraints>
             </tableViewCellContentView>
@@ -73,4 +79,7 @@
             <point key="canvasLocation" x="406" y="293"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="CalendarIcon" width="19" height="19"/>
+    </resources>
 </document>

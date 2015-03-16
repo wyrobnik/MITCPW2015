@@ -31,7 +31,6 @@ typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 //Bookmarked Events (stored on device)
 @property (strong, nonatomic, readonly) NSMutableDictionary* bookmarkedEvents;  //jsonEvents
 
-
 -(void)reloadEventsWithErrorHandler:(id)target selector:(SEL)selector;  //Reload the events. If error, calls selector
 
 -(void)addBookmarkedEventsObject:(Event *)event;

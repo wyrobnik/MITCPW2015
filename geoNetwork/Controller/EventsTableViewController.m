@@ -42,6 +42,7 @@
 }
 
 -(void)setup {
+    
     self.api = [LibraryAPI sharedInstance];
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
@@ -107,6 +108,10 @@
     cell.address.text = event.venue;
     
     cell.timeLable.text = [NSString stringWithFormat:@"%@ - %@", [self.dateFormatter stringFromDate:event.startTime], [self.dateFormatter stringFromDate:event.endTime]];
+    
+    // Color of row if featured
+    //TODO
+    
 
     return cell;
 }

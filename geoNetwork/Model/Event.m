@@ -16,8 +16,7 @@
 #define EVENT_START_TIME @"start_time"
 #define EVENT_END_TIME @"end_time"
 
-#define EVENT_FILTER1 @"filter_1"
-#define EVENT_FILTER2 @"filter_2"
+#define EVENT_FILTER @"filters"
 #define EVENT_FREE @"free"
 
 //Business
@@ -88,8 +87,7 @@ id NSNullToNil(id object) {
             _state = NSNullToNil([jsonEvent valueForKey:LOCATION_STATE]);
             _zip = NSNullToNil([jsonEvent valueForKey:LOCATION_ZIP]);
             
-            _filters = @[NSNullToNil([jsonEvent valueForKey:EVENT_FILTER1]),
-                         NSNullToNil([jsonEvent valueForKey:EVENT_FILTER2])];
+            _filters = [(NSString*)NSNullToNil([jsonEvent valueForKey:EVENT_FILTER]) componentsSeparatedByString:@","];
             _free = [NSNullToNil([jsonEvent valueForKey:EVENT_FREE]) isEqualToString:@"1"];
             
         } @catch(NSException *exception) {
