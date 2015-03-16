@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="HourSlider">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00 AM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qYQ-bl-So7">
+                    <rect key="frame" x="8" y="279.5" width="66" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="6" maxValue="29" translatesAutoresizingMaskIntoConstraints="NO" id="gJL-ze-ggn">
+                    <rect key="frame" x="80" y="274" width="514" height="31"/>
+                    <color key="tintColor" red="0.63921568630000003" green="0.1215686275" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                </slider>
+            </subviews>
+            <color key="backgroundColor" red="0.54117647058823526" green="0.54509803921568623" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="gJL-ze-ggn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="XAp-Zk-DcQ"/>
+                <constraint firstItem="qYQ-bl-So7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="hXd-qV-7c6"/>
+                <constraint firstAttribute="trailing" secondItem="gJL-ze-ggn" secondAttribute="trailing" constant="8" id="mZe-to-9Bc"/>
+                <constraint firstItem="gJL-ze-ggn" firstAttribute="leading" secondItem="qYQ-bl-So7" secondAttribute="trailing" constant="8" id="of0-RL-IcP"/>
+                <constraint firstItem="qYQ-bl-So7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="zv9-P8-ObJ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="hXd-qV-7c6"/>
+                    <exclude reference="zv9-P8-ObJ"/>
+                    <exclude reference="XAp-Zk-DcQ"/>
+                    <exclude reference="mZe-to-9Bc"/>
+                    <exclude reference="of0-RL-IcP"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="hXd-qV-7c6"/>
+                    <include reference="zv9-P8-ObJ"/>
+                    <include reference="XAp-Zk-DcQ"/>
+                    <include reference="mZe-to-9Bc"/>
+                    <include reference="of0-RL-IcP"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="label" destination="qYQ-bl-So7" id="zJq-yB-lCQ"/>
+                <outlet property="slider" destination="gJL-ze-ggn" id="705-uG-Tf2"/>
+            </connections>
+            <point key="canvasLocation" x="334" y="304"/>
+        </view>
+    </objects>
+</document>

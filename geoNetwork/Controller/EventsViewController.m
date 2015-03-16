@@ -12,6 +12,7 @@
 #import "SISidebarTransitionObject.h"
 #import "DateViewForBarButton.h"
 #import "UIColor_Extension.h"
+#import "HourSlider.h"
 
 @interface EventsViewController ()
 
@@ -20,6 +21,7 @@
 //@property (weak, nonatomic) IBOutlet DateAndLocationButton *dateButton;
 @property (strong, nonatomic) NSDate* selectedDate;
 @property (strong, nonatomic) DIDatepicker *datepicker;
+@property (strong, nonatomic) HourSlider *hourSlider;  //TODO make this a control
 @property (nonatomic) BOOL datepickerOpen;
 @property (strong, nonatomic) DateViewForBarButton *selectedDateView;
 
@@ -103,6 +105,16 @@
     [self.view addSubview:self.datepicker];
     
     [self.datepicker addTarget:self action:@selector(updateSelectedDate) forControlEvents:UIControlEventValueChanged];
+    
+    //UISlider for hour
+    self.hourSlider = [HourSlider loadFromNib];
+    self.hourSlider.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, self.navigationController.navigationBar.frame.size.height);
+    [self.view addSubview:self.hourSlider];
+    
+    //TODO hacky! Fix
+    CGRect rect = self.hourSlider.slider.frame;
+    self.hourSlider.slider.frame = CGRectMake(rect.origin.x, 7, [UIScreen mainScreen].bounds.size.width - 90 , rect.size.height);
+    
     
     // CHANGE DATES HERE! //TODO make easier accessible
 //    [self.datepicker fillDatesFromCurrentDate:90];
@@ -294,13 +306,18 @@
         [self.datepicker setCenter:CGPointMake(self.datepicker.center.x,
                                                        self.navigationController.navigationBar.frame.origin.y +
                                                self.datepicker.frame.size.height/2 +(datepickerOpen)*44)];
+        
+        [self.hourSlider setCenter:CGPointMake(self.hourSlider.center.x,
+                                               [UIScreen mainScreen].bounds.size.height +
+                                               self.hourSlider.frame.size.height/2 -(datepickerOpen)*44)];
+        
         CGRect containerFrame = self.containerViewController.view.frame;
         containerFrame = CGRectMake(0,
 //                                    containerFrame.origin.y + (-1+2*datepickerOpen)*44,
                                     self.navigationController.navigationBar.frame.origin.y +
                                     self.datepicker.frame.size.height +(datepickerOpen)*44,
                                     containerFrame.size.width,
-                                    containerFrame.size.height - (-1+2*datepickerOpen)*44
+                                    containerFrame.size.height - 2*(-1+2*datepickerOpen)*44
                                     );
         self.containerViewController.view.frame = containerFrame;
         self.currentVC.view.frame = self.containerViewController.view.bounds;

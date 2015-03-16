@@ -20,6 +20,8 @@
 		0E5ECF851A229B63008E83CD /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5ECF841A229B63008E83CD /* SidebarTableViewController.m */; };
 		0E754C641A33996500600E27 /* UIColor_Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E754C631A33996500600E27 /* UIColor_Extension.m */; };
 		0E7C23931A78B66000AC5359 /* DateViewForBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7C23921A78B66000AC5359 /* DateViewForBarButton.m */; };
+		0E858D501AB77D7D005F35D7 /* HourSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E858D4F1AB77D7D005F35D7 /* HourSlider.m */; };
+		0E858D521AB77DA5005F35D7 /* HourSlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E858D511AB77DA5005F35D7 /* HourSlider.xib */; };
 		0E9171181A38ADBD00ECB044 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9171171A38ADBD00ECB044 /* DIDatepicker.m */; };
 		0E91711B1A38ADC900ECB044 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E91711A1A38ADC900ECB044 /* DIDatepickerDateView.m */; };
 		0E9C80AC1AA0CB11002EBE1E /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C80AB1AA0CB11002EBE1E /* Launch Screen.xib */; };
@@ -82,6 +84,9 @@
 		0E754C631A33996500600E27 /* UIColor_Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColor_Extension.m; sourceTree = "<group>"; };
 		0E7C23911A78B66000AC5359 /* DateViewForBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateViewForBarButton.h; path = View/DateViewForBarButton.h; sourceTree = "<group>"; };
 		0E7C23921A78B66000AC5359 /* DateViewForBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateViewForBarButton.m; path = View/DateViewForBarButton.m; sourceTree = "<group>"; };
+		0E858D4E1AB77D7D005F35D7 /* HourSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HourSlider.h; path = View/HourSlider.h; sourceTree = "<group>"; };
+		0E858D4F1AB77D7D005F35D7 /* HourSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HourSlider.m; path = View/HourSlider.m; sourceTree = "<group>"; };
+		0E858D511AB77DA5005F35D7 /* HourSlider.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HourSlider.xib; sourceTree = "<group>"; };
 		0E9171161A38ADBD00ECB044 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
 		0E9171171A38ADBD00ECB044 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		0E9171191A38ADC900ECB044 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
@@ -300,6 +305,9 @@
 				0EBE0B921A6C60C300DE2C36 /* SidebarNavigationCustomView.h */,
 				0EBE0B931A6C60C300DE2C36 /* SidebarNavigationCustomView.m */,
 				0EBE0B951A6C6F0E00DE2C36 /* SidebarNavigationCustomView.xib */,
+				0E858D4E1AB77D7D005F35D7 /* HourSlider.h */,
+				0E858D4F1AB77D7D005F35D7 /* HourSlider.m */,
+				0E858D511AB77DA5005F35D7 /* HourSlider.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -441,6 +449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E858D521AB77DA5005F35D7 /* HourSlider.xib in Resources */,
 				0E22E0891A0EACFF00CD85B5 /* EventTableViewCell.xib in Resources */,
 				0EBE0B961A6C6F0E00DE2C36 /* SidebarNavigationCustomView.xib in Resources */,
 				0EB019C9199E4738005D36D0 /* Images.xcassets in Resources */,
@@ -460,6 +469,7 @@
 				0EBD23281A2CF6E800A20B85 /* SDWebImageDownloader.m in Sources */,
 				0E9171181A38ADBD00ECB044 /* DIDatepicker.m in Sources */,
 				0EE8307F1A4B4A8F00248714 /* SISidebarTransitionObject.m in Sources */,
+				0E858D501AB77D7D005F35D7 /* HourSlider.m in Sources */,
 				0EBE0B991A6C969E00DE2C36 /* SettingsViewController.m in Sources */,
 				0E91711B1A38ADC900ECB044 /* DIDatepickerDateView.m in Sources */,
 				0EBD232B1A2CF6E800A20B85 /* SDWebImagePrefetcher.m in Sources */,

@@ -13,8 +13,9 @@
 
 @interface EventsTableViewController ()
 
+//TODO single dateformatter for better performance/memory
+
 @property (strong, nonatomic) LibraryAPI* api;
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -47,9 +48,6 @@
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
     //TODO: If no data/count 0, then handle
-    
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    [self.dateFormatter setDateFormat:@"EEE hh:mm aaa"];
 }
 
 //This is called when class is notified of reloaded event data
@@ -75,7 +73,10 @@
 }
 
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [self.dateFormatter stringFromDate:[[LibraryAPI sharedInstance].sortedEventSections objectAtIndex:section]];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [dateFormatter setDateFormat:@"EEE hh:mm a"];
+    return [dateFormatter stringFromDate:[[LibraryAPI sharedInstance].sortedEventSections objectAtIndex:section]];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
@@ -107,7 +108,23 @@
     cell.filterTags.text = [event.filters componentsJoinedByString:@", "];
     cell.address.text = event.venue;
     
-    cell.timeLable.text = [NSString stringWithFormat:@"%@ - %@", [self.dateFormatter stringFromDate:event.startTime], [self.dateFormatter stringFromDate:event.endTime]];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [dateFormatter setDateFormat:@"hh:mm a"];
+    NSString *startTime = [dateFormatter stringFromDate:event.startTime];
+
+    //Compare dates
+    NSDate *startDate;
+    NSDate *endDate;
+    [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit startDate:&startDate interval:NULL forDate:event.startTime];
+    [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit startDate:&endDate interval:NULL forDate:event.endTime];
+    if ([startDate compare:endDate] != NSOrderedSame) {
+        [dateFormatter setDateFormat:@"EEE hh:mm a"];
+    }
+    
+    NSString *endTime = [dateFormatter stringFromDate:event.endTime];
+    
+    cell.timeLable.text = [NSString stringWithFormat:@"%@ - %@", startTime, endTime];
     
     // Color of row if featured
     //TODO
@@ -168,9 +185,12 @@
     // Pass the selected object to the new view controller.
     if ([[segue identifier] isEqualToString:@"segueSingleEvent"]) {
         if ([sender isMemberOfClass:[NSIndexPath class]]) {
-            NSIndexPath *indexPathSender = sender;
+            NSIndexPath *indexPath = sender;
             EventDetailViewController *destinationViewController = segue.destinationViewController;
-            [destinationViewController setEvent:[self.api.events objectAtIndex:indexPathSender.row]];
+            NSDate *key = [self.api.sortedEventSections objectAtIndex:indexPath.section];
+            NSArray *eventsArray = [self.api.eventSections objectForKey:key];
+            Event *event = [eventsArray objectAtIndex:indexPath.row];
+            [destinationViewController setEvent:event];
         }
     }
     
