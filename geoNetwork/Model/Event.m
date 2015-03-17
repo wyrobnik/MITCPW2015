@@ -87,7 +87,7 @@ id NSNullToNil(id object) {
             _state = NSNullToNil([jsonEvent valueForKey:LOCATION_STATE]);
             _zip = NSNullToNil([jsonEvent valueForKey:LOCATION_ZIP]);
             
-            _filters = [(NSString*)NSNullToNil([jsonEvent valueForKey:EVENT_FILTER]) componentsSeparatedByString:@","];
+            _filters = [(NSString*)NSNullToNil([jsonEvent valueForKey:EVENT_FILTER]) componentsSeparatedByString:@", "];
             _free = [NSNullToNil([jsonEvent valueForKey:EVENT_FREE]) isEqualToString:@"1"];
             
         } @catch(NSException *exception) {

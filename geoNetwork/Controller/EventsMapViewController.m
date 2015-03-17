@@ -15,6 +15,9 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) LibraryAPI* api;
+@property (nonatomic) int selectedHourInt;
+@property (strong, nonatomic, readonly) NSDate *selectedHour;
+@property (nonatomic) BOOL changingHour;
 
 @end
 
@@ -43,6 +46,41 @@
     });
 }
 
+#pragma mark - Slider logic
+
+-(void)setHourSlider:(UISlider *)hourSlider {
+    _hourSlider = hourSlider;
+    [hourSlider addTarget:self action:@selector(scrollUsingSlider) forControlEvents:UIControlEventValueChanged];
+    [hourSlider addTarget:self action:@selector(startScrollUsingSlider) forControlEvents:UIControlEventTouchDown];
+    [hourSlider addTarget:self action:@selector(endScrollUsingSlider) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
+}
+
+-(void)scrollUsingSlider {
+    [self setSelectedHourInt:self.hourSlider.value];
+}
+
+-(void)startScrollUsingSlider {
+    self.changingHour = YES;
+    //Map include all events of day
+    MKMapPoint annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
+    MKMapRect zoomRect = self.mapView.userLocationVisible ? MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1) : MKMapRectNull;
+    for (Event *event in self.api.events)  //All events
+    {
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(CLLocationCoordinate2DMake(event.latitude, event.longitude));  //TODO reuse annotationPoint
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1); //TODO reuse pointRect
+        zoomRect = MKMapRectUnion(zoomRect, pointRect);
+    }
+    double inset = -zoomRect.size.height * 0.2;
+    if ([self.mapView.annotations count] > 0)  //Avoid zooming in and out
+        [self.mapView setVisibleMapRect:MKMapRectInset(zoomRect, inset, inset) animated:YES];
+    
+}
+
+-(void)endScrollUsingSlider {
+    self.changingHour = NO;
+    [self redrawEvents];
+}
+
 /*
  * This redraws annotations and resizes map so that all are visible (removes old annotations and adds new ones)
  *
@@ -51,10 +89,20 @@
 -(void)redrawEvents {
     
     [self.mapView removeAnnotations:self.mapView.annotations]; //This also removes the user location pin!!!
-
-    for (int i = 0; i < [self.api.events count]; i++) {
+    NSArray *eventsArray;
+    if (self.api.eventClass == Discovery) {
+        eventsArray = [self.api.eventSections objectForKey:self.selectedHour];
+    } else {
+        eventsArray = self.api.events;
+    }
+    
+    if (!eventsArray) {
+        return;
+    }
+    
+    for (int i = 0; i < [eventsArray count]; i++) {
          if ([[self.api.events objectAtIndex:i] isKindOfClass:[Event class]]) {
-             Event *event = [self.api.events objectAtIndex:i];
+             Event *event = [eventsArray objectAtIndex:i];
              
              // Annotations
              CustomAnnotation *annotation = [[CustomAnnotation alloc]
@@ -64,18 +112,20 @@
          } 
     }
     
+    if (!self.changingHour) {
     // Center visibleMapRegion around annotations
-    MKMapPoint annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
-    MKMapRect zoomRect = self.mapView.userLocationVisible ? MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1) : MKMapRectNull;
-    for (id <MKAnnotation> annotation in self.mapView.annotations)
-    {
-        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
-        zoomRect = MKMapRectUnion(zoomRect, pointRect);
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
+        MKMapRect zoomRect = self.mapView.userLocationVisible ? MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1) : MKMapRectNull;
+        for (id <MKAnnotation> annotation in self.mapView.annotations)
+        {
+            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);  //TODO reuse annotationPoint
+            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1); //TOD reuse pointRect
+            zoomRect = MKMapRectUnion(zoomRect, pointRect);
+        }
+        double inset = -zoomRect.size.height * 0.2;
+        if ([self.mapView.annotations count] > 0)  //Avoid zooming in and out
+            [self.mapView setVisibleMapRect:MKMapRectInset(zoomRect, inset, inset) animated:YES];
     }
-    double inset = -zoomRect.size.height * 0.2;
-    if ([self.mapView.annotations count] > 0)  //Avoid zooming in and out
-        [self.mapView setVisibleMapRect:MKMapRectInset(zoomRect, inset, inset) animated:YES];
     
 }
 
@@ -118,6 +168,24 @@
     _mapView = mapView;
 //    [CLLocationManager requestAlwaysAuthorization];  //TODO: Read and use CLLocationManager
     self.mapView.showsUserLocation = YES;
+}
+
+-(void)setSelectedHourInt:(int)selectedHourInt {
+    if (_selectedHourInt != selectedHourInt) {
+        _selectedHourInt = selectedHourInt;
+        [self redrawEvents];
+    }
+}
+
+-(NSDate *)selectedHour {
+    //Convert to date
+    //Beginning of day
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self.api.eventsQueryConstraints.startTime];
+    NSDate *dateToPass = [[NSCalendar currentCalendar] dateFromComponents:components];
+    //Add hours
+    NSTimeInterval selectedHoursToSeconds = self.selectedHourInt * 60 * 60; //Remember, slider has value from 6 to 30
+    dateToPass = [dateToPass dateByAddingTimeInterval:selectedHoursToSeconds];
+    return dateToPass;
 }
 
 #pragma mark - Navigation

@@ -27,7 +27,6 @@ typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 
 @property (strong, nonatomic) EventsQueryConstraints* eventsQueryConstraints;
 
-
 //Bookmarked Events (stored on device)
 @property (strong, nonatomic, readonly) NSMutableDictionary* bookmarkedEvents;  //jsonEvents
 

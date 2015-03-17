@@ -11,4 +11,8 @@
 
 @interface EventsMapViewController : UIViewController<MKMapViewDelegate>
 
+@property (strong, nonatomic) UISlider *hourSlider; //Hacky way of setting it
+
+
+
 @end

@@ -8,6 +8,8 @@
 
 #import "EventsViewController.h"
 #import "LibraryAPI.h"
+#import "EventsMapViewController.h"
+#import "EventsTableViewController.h"
 #import "DIDatepicker.h"
 #import "SISidebarTransitionObject.h"
 #import "DateViewForBarButton.h"
@@ -30,8 +32,8 @@
 
 //container view properties
 @property (strong, nonatomic) UIViewController *containerViewController;  //Container to hold table/map vc
-@property (strong, nonatomic) UIViewController *eventsTableVC;
-@property (strong, nonatomic) UIViewController *eventsMapVC;
+@property (strong, nonatomic) EventsTableViewController *eventsTableVC;
+@property (strong, nonatomic) EventsMapViewController *eventsMapVC;
 @property (strong, nonatomic) UIViewController *currentVC;
 @property (nonatomic) BOOL viewSwapInProgress;  //to disable while happening
 
@@ -110,6 +112,8 @@
     self.hourSlider = [HourSlider loadFromNib];
     self.hourSlider.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, self.navigationController.navigationBar.frame.size.height);
     [self.view addSubview:self.hourSlider];
+    [self.eventsTableVC setHourSlider:self.hourSlider.slider]; // Pass pointer to table view
+    [self.eventsMapVC setHourSlider:self.hourSlider.slider]; //Pass pointer to Map view
     
     //TODO hacky! Fix
     CGRect rect = self.hourSlider.slider.frame;
@@ -126,7 +130,7 @@
 }
 
 -(void)updateSelectedDate {
-    [self setSelectedDate:self.datepicker.selectedDate];
+    [self setSelectedDate:self.datepicker.selectedDate]; //TODO delete this function and make selector
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -247,6 +251,7 @@
         api.eventsQueryConstraints.endTime = nextDayAt6AM;
         
         [api reloadEventsWithErrorHandler:self selector:@selector(handleConnectionError:)];
+
     }
 }
 

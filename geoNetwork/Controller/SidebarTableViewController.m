@@ -132,10 +132,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SidebarTableCell" forIndexPath:indexPath];
+    UITableViewCell *cell;
     
     // Configure the cell...
     if (indexPath.section == 0) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SidebarTableCell" forIndexPath:indexPath];
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tintColor = [UIColor whiteColor];
@@ -143,15 +144,18 @@
         
         if (indexPath.row == [[LibraryAPI sharedInstance] eventClass]) {
 //            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            self.selectedMarkerBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, cell.frame.size.height)];
-            self.selectedMarkerBar.backgroundColor = [UIColor appPrimaryColor];
-            [cell addSubview:self.selectedMarkerBar];
+            if (!self.selectedMarkerBar) {
+                self.selectedMarkerBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, cell.frame.size.height)];
+                self.selectedMarkerBar.backgroundColor = [UIColor appPrimaryColor];
+                [cell addSubview:self.selectedMarkerBar];
+            }
             //bold
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
         }
         
     }
     if (indexPath.section == 1) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SidebarFilterTableCell" forIndexPath:indexPath];
         NSArray *filterTags = [EventsQueryConstraints filterTags];
         
         if (indexPath.row < [filterTags count]) {
@@ -193,7 +197,13 @@
             UINavigationController *navVC = (UINavigationController*)self.presentingViewController;
             [[LibraryAPI sharedInstance] setEventClass:(int)indexPath.row withErrorHandler:navVC.topViewController selector:@selector(handleConnectionError:)];
         }
-
+        //TODO make this dynamic!!!
+//        NSArray *indexPaths = @[[NSIndexPath indexPathForRow:0 inSection:0],
+//                                [NSIndexPath indexPathForRow:1 inSection:0],
+//                                ];
+//        [tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else if (indexPath.section == 1) {

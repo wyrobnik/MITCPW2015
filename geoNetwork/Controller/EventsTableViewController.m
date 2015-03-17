@@ -16,6 +16,10 @@
 //TODO single dateformatter for better performance/memory
 
 @property (strong, nonatomic) LibraryAPI* api;
+//HACKY solution
+@property (nonatomic) BOOL userIsScrollingTable;
+@property (nonatomic) BOOL userUsedSlider;
+
 
 @end
 
@@ -43,16 +47,51 @@
 }
 
 -(void)setup {
-    
+    self.tableView.delegate = self;
     self.api = [LibraryAPI sharedInstance];
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
     //TODO: If no data/count 0, then handle
 }
 
+-(void)setHourSlider:(UISlider *)hourSlider {
+    _hourSlider = hourSlider;
+    [hourSlider addTarget:self action:@selector(scrollUsingSlider) forControlEvents:UIControlEventValueChanged];
+    [hourSlider addTarget:self action:@selector(startScrollUsingSlider) forControlEvents:UIControlEventTouchDown];
+}
+
+-(void)startScrollUsingSlider {
+    [self.tableView setContentOffset:self.tableView.contentOffset animated:NO];  //Stops scrolling
+}
+
+-(void)scrollUsingSlider {
+    if (!self.userIsScrollingTable) {
+        self.userUsedSlider = YES;
+        //Convert to date
+        //Beginning of day
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self.api.eventsQueryConstraints.startTime];
+        NSDate *dateToPass = [[NSCalendar currentCalendar] dateFromComponents:components];
+        //Add hours
+        NSTimeInterval selectedHoursToSeconds = ((int)self.hourSlider.value) * 60 * 60; //Remember, slider has value from 6 to 30
+        dateToPass = [dateToPass dateByAddingTimeInterval:selectedHoursToSeconds];
+        
+        //Get Section number
+        NSInteger sectionIndex = [self.api.sortedEventSections indexOfObject:dateToPass];
+        if (sectionIndex >= 0 && sectionIndex < [self.api.sortedEventSections count]) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionIndex] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+        self.userUsedSlider = NO;
+    }
+}
+
 //This is called when class is notified of reloaded event data
 -(void)reloadData {
-    [self.tableView reloadData];
+    //Hacky
+    [UIView animateWithDuration:0 animations:^{
+        [self.tableView reloadData];
+    } completion:^(BOOL finished) {
+        [self scrollViewDidScroll:self.tableView]; //To set slide to correct value
+    }];
 }
 
 #pragma mark - Table view data source
@@ -135,6 +174,42 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self performSegueWithIdentifier:@"segueSingleEvent" sender:indexPath];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //Set UISlider hours
+    if (!self.userUsedSlider) {
+        [self setUserIsScrollingTable:YES];
+        if ([LibraryAPI sharedInstance].eventClass == Discovery  ) {
+            NSArray *visibleCells = [self.tableView visibleCells];
+            if (!([visibleCells count] > 0)) {
+                return;
+            }
+            NSUInteger sectionNumber = [[self.tableView indexPathForCell:[visibleCells objectAtIndex:0]] section];
+            NSDate *sectionDate = [self.api.sortedEventSections objectAtIndex:sectionNumber];
+            
+            NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self.api.eventsQueryConstraints.startTime];
+            NSDate *selectedDate = [[NSCalendar currentCalendar] dateFromComponents:components];
+            
+            int hoursDifference = (int)[[[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:selectedDate toDate:sectionDate options:0] hour];
+            
+            if (hoursDifference >= 6 && hoursDifference < 30) {
+                self.hourSlider.value = hoursDifference;
+                [self.hourSlider sendActionsForControlEvents:UIControlEventValueChanged];
+            }
+        }
+    }
+}
+
+//To avoid conflicting messages!!! See scrollViewDidScroll the line [self.hourSlider sendActionsForControlEvents:UIControlEventValueChanged];
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self setUserIsScrollingTable:NO];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self setUserIsScrollingTable:NO];
+    }
 }
 
 /*
