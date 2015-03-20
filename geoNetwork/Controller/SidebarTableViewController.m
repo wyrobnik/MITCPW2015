@@ -29,6 +29,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //TODO cleaner
+    [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:@"InitRequestReturned" object:nil];
+    
 //    [self loadEventViewControllers];
     
 //    self.navigationItem.title = @"townbilly";

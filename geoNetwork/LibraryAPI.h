@@ -17,6 +17,9 @@ typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 
 @interface LibraryAPI : NSObject
 
+@property (strong, nonatomic) NSDate *rangeStartDate;
+@property (strong, nonatomic) NSDate *rangeEndDate;
+
 @property (nonatomic) EventsDiscoveryBookmarkedFollowed eventClass;
 
 //Event (depends on eventClass selected)

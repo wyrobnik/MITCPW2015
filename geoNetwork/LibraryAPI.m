@@ -39,11 +39,18 @@
         
         // Make server init call to get filter tags
         [ServerFetcher initRequestwithCallback:^(NSData *data, NSURLResponse *response, NSError *error) {
-            NSDictionary *filtersDic = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:FILTERS_KEY];
-            NSLog(@"Filters = %@", filtersDic);
-            [EventsQueryConstraints setFilterTags:[[filtersDic allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
+            
+            NSDictionary *initDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"Filters = %@", initDic);
+            
+            //Set date range // TODO implement this
+//            [_obj setRangeStartDate:[dateFormatter dateFromString:[initDic valueForKey:@"start_date"]]];
+//            [_obj setRangeEndDate:[dateFormatter dateFromString:[initDic valueForKey:@"end_date"]]];
+            
+            [EventsQueryConstraints setFilterTags:[[[initDic valueForKey:FILTERS_KEY] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"InitRequestReturned" object:self];
+            
         }];
-        
     });
     return _obj;
 }

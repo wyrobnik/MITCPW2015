@@ -91,6 +91,7 @@
         [self.tableView reloadData];
     } completion:^(BOOL finished) {
         [self scrollViewDidScroll:self.tableView]; //To set slide to correct value
+        self.userIsScrollingTable = NO;
     }];
 }
 

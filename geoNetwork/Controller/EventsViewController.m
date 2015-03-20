@@ -124,9 +124,24 @@
 //    [self.datepicker fillDatesFromCurrentDate:90];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    NSDate *rangeStartDate = [dateFormatter dateFromString:@"04-10-2014"];
-    [self.datepicker fillDatesFromDate:rangeStartDate numberOfDays:4];
-    [self.datepicker selectDateAtIndex:0];
+    NSDate *startDate = [dateFormatter dateFromString:@"04-10-2014"];
+    NSDate *endDate = [dateFormatter dateFromString:@"04-13-2014"];
+    
+    NSDate *dateToday = [NSDate date];
+    NSInteger totalDays = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit
+                                    fromDate:startDate
+                                      toDate:endDate
+                                     options:0] day];
+    NSInteger indexDay = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit
+                                                           fromDate:startDate
+                                                             toDate:dateToday
+                                                            options:0] day];
+    [self.datepicker fillDatesFromDate:startDate numberOfDays:4];
+    
+    if (!(indexDay >= 0 && indexDay <= totalDays)) {
+        indexDay = 0;
+    }
+    [self.datepicker selectDateAtIndex:indexDay];
 }
 
 -(void)updateSelectedDate {
