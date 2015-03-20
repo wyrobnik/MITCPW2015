@@ -28,9 +28,17 @@
     
     
     self.eventTitle.text = self.event.title;
-//    self.eventStartTime.text = self.event.startTime;
-//    self.eventEndTime.text = self.event.endTime;
-    self.eventDescription.text = self.event.description_event;
+    
+    //TextView adjust size
+    NSAttributedString *description = [[NSAttributedString alloc] initWithString:self.event.description_event
+                                                                      attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0f]}];
+    [self.eventDescription setAttributedText:description];
+    CGFloat neededHeight = [self.eventDescription sizeThatFits:CGSizeMake(self.view.frame.size.width, FLT_MAX)].height;
+    CGRect textViewFrame = self.eventDescription.frame;
+    textViewFrame.size.height = neededHeight + 20.0f;  // + buffer
+    self.eventDescription.frame = textViewFrame;
+    
+    
     self.eventAddress.text = self.event.venue;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -102,6 +110,31 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat output;
+    switch (indexPath.section) {
+        case 0:
+            output = 60.0f;
+            break;
+        case 1:
+            output = 44.0f;
+            break;
+        case 2:
+            output = self.eventDescription.frame.size.height;
+            break;
+        case 3:
+            if (indexPath.row == 0)
+                output = 128.0f;
+            else
+                output = 44.0f;
+            break;
+        default:
+            output = 44.0f;
+            break;
+    }
+    return output;
 }
 
 

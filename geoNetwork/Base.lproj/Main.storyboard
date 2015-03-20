@@ -68,7 +68,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Time" id="0uu-FS-qXs">
                                 <cells>
-                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="aWb-k4-aaq" rowHeight="40" style="IBUITableViewCellStyleDefault" id="FaS-Ll-mQA">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="aWb-k4-aaq" rowHeight="44" style="IBUITableViewCellStyleDefault" id="FaS-Ll-mQA">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FaS-Ll-mQA" id="QeT-Kb-aqb">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -131,7 +131,7 @@
                                             <segue destination="PAF-It-gW1" kind="push" identifier="eventDetailMapVC1" id="ClC-BM-vjC"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="hUZ-FS-g9H" style="IBUITableViewCellStyleDefault" id="iex-hj-oG3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="hUZ-FS-g9H" rowHeight="44" style="IBUITableViewCellStyleDefault" id="iex-hj-oG3">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iex-hj-oG3" id="SJ0-n4-RuZ">
                                             <autoresizingMask key="autoresizingMask"/>
