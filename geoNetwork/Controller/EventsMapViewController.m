@@ -116,6 +116,9 @@
         MKMapRect zoomRect = MKMapRectNull;
         for (id <MKAnnotation> annotation in self.mapView.annotations)
         {
+            if (annotation == self.mapView.userLocation) {
+                continue;  //Do not include user location
+            }
             MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate); 
             MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
             zoomRect = MKMapRectUnion(zoomRect, pointRect);

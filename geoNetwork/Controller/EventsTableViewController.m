@@ -48,6 +48,10 @@
 
 -(void)setup {
     self.tableView.delegate = self;
+    
+    //Handle inset issues
+    [self.tableView setContentOffset:CGPointMake(0, 200)]; //TODO this is not clean
+    
     self.api = [LibraryAPI sharedInstance];
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
