@@ -7,6 +7,7 @@
 //
 
 #import "CustomAnnotation.h"
+#import "UIColor_Extension.h"
 @implementation CustomAnnotation
 
 -(id)initWithEvent:(Event *)event {
@@ -16,6 +17,7 @@
         _title = event.title;
         _coordinate = CLLocationCoordinate2DMake(event.latitude, event.longitude);
 //        _dropped = NO;
+//        _pinColor = [UIColor appPrimaryColor];
     }
     return self;
 }

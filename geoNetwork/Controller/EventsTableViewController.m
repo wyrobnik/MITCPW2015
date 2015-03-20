@@ -167,7 +167,11 @@
     cell.timeLable.text = [NSString stringWithFormat:@"%@ - %@", startTime, endTime];
     
     // Color of row if featured
-    //TODO
+    if ([cell.filterTags.text rangeOfString:@"Featured"].location != NSNotFound) {
+        cell.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+    } else {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
 
     return cell;

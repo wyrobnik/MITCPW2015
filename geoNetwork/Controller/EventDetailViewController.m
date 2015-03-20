@@ -7,20 +7,16 @@
 //
 
 #import "EventDetailViewController.h"
-#import "UIImageView+WebCache.h"
 #import "SingleEventMapViewController.h"
 #import "LibraryAPI.h"
 
 @interface EventDetailViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *eventIcon;
 @property (weak, nonatomic) IBOutlet UILabel *eventTitle;
 @property (weak, nonatomic) IBOutlet UITableViewCell *startTimeCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *endTimeCell;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (weak, nonatomic) IBOutlet UITextView *eventDescription;
 @property (weak, nonatomic) IBOutlet UILabel *eventAddress;
-@property (weak, nonatomic) IBOutlet UITableViewCell *businessPhone;
 
 @end
 
@@ -30,30 +26,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
     self.eventTitle.text = self.event.title;
 //    self.eventStartTime.text = self.event.startTime;
 //    self.eventEndTime.text = self.event.endTime;
     self.eventDescription.text = self.event.description_event;
     self.eventAddress.text = self.event.venue;
-    [self.eventIcon sd_setImageWithURL:self.event.icon_url placeholderImage:[UIImage imageNamed:@"MITEngineersLogo"]];
-    
-    self.businessPhone.textLabel.text = self.event.phoneNumber;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMhhmm" options:0 locale:dateFormatter.locale];
-    self.startTimeCell.textLabel.text = [NSString stringWithFormat:@"Start: %@", [dateFormatter stringFromDate:self.event.startTime]];
-    self.endTimeCell.textLabel.text = [NSString stringWithFormat:@"End:  %@",[dateFormatter stringFromDate:self.event.endTime]];
-//    [NSDateFormatter localizedStringFromDate:self.event.startTime dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [dateFormatter setDateFormat:@"EEEE hh:mm a"];
+    NSString *startTime = [dateFormatter stringFromDate:self.event.startTime];
+    
+    NSDate *startDate;
+    NSDate *endDate;
+    [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit startDate:&startDate interval:NULL forDate:self.event.startTime];
+    [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit startDate:&endDate interval:NULL forDate:self.event.endTime];
+    if ([startDate compare:endDate] == NSOrderedSame) {
+        [dateFormatter setDateFormat:@"hh:mm a"];
+    }
+    
+    NSString *endTime = [dateFormatter stringFromDate:self.event.endTime];
+    
+    self.startTimeCell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", startTime, endTime];
+    //    [NSDateFormatter localizedStringFromDate:self.event.startTime dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle];
 
     
     
     
-    //Border around ImageView
-    self.eventIcon.layer.cornerRadius = 9;
-    self.eventIcon.layer.masksToBounds = YES;
-    self.eventIcon.layer.borderColor = [[UIColor blackColor] CGColor];
-    self.eventIcon.layer.borderWidth = 1.0;
-
+    
     //Setup map
     self.mapView.delegate = self;
     self.mapView.userInteractionEnabled = NO;
@@ -100,10 +101,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //Phone call
-    if ([indexPath isEqual:[tableView indexPathForCell:self.businessPhone]]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.event.phoneNumber]]];
-    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -10,12 +10,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "Event.h"
 #import "EventsQueryConstraints.h"
 
 typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 
-@interface LibraryAPI : NSObject
+@interface LibraryAPI : NSObject<CLLocationManagerDelegate>
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property (strong, nonatomic) NSDate *rangeStartDate;
 @property (strong, nonatomic) NSDate *rangeEndDate;

@@ -252,4 +252,25 @@
     _sortedEventSections = [[_eventSections allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
+-(CLLocationManager*)locationManager {
+    if (!_locationManager) {
+        _locationManager = [CLLocationManager new];
+        _locationManager.delegate = self;
+
+        // Get Authorization
+        CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+        if (!(authorizationStatus == kCLAuthorizationStatusDenied || authorizationStatus == kCLAuthorizationStatusRestricted))
+        {
+            if (authorizationStatus == kCLAuthorizationStatusNotDetermined) {
+                if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+                    [_locationManager requestWhenInUseAuthorization];
+                }
+                authorizationStatus = [CLLocationManager authorizationStatus];
+                [CLLocationManager locationServicesEnabled];
+            }
+        }
+    }
+    return _locationManager;
+}
+
 @end

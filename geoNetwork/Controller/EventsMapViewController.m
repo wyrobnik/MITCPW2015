@@ -62,8 +62,7 @@
 -(void)startScrollUsingSlider {
     self.changingHour = YES;
     //Map include all events of day
-    MKMapPoint annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
-    MKMapRect zoomRect = self.mapView.userLocationVisible ? MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1) : MKMapRectNull;
+    MKMapRect zoomRect = MKMapRectNull;
     for (Event *event in self.api.events)  //All events
     {
         MKMapPoint annotationPoint = MKMapPointForCoordinate(CLLocationCoordinate2DMake(event.latitude, event.longitude));  //TODO reuse annotationPoint
@@ -114,12 +113,11 @@
     
     if (!self.changingHour) {
     // Center visibleMapRegion around annotations
-        MKMapPoint annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
-        MKMapRect zoomRect = self.mapView.userLocationVisible ? MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1) : MKMapRectNull;
+        MKMapRect zoomRect = MKMapRectNull;
         for (id <MKAnnotation> annotation in self.mapView.annotations)
         {
-            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);  //TODO reuse annotationPoint
-            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1); //TOD reuse pointRect
+            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate); 
+            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
             zoomRect = MKMapRectUnion(zoomRect, pointRect);
         }
         double inset = -zoomRect.size.height * 0.2;
@@ -166,7 +164,11 @@
 
 -(void)setMapView:(MKMapView *)mapView {
     _mapView = mapView;
-//    [CLLocationManager requestAlwaysAuthorization];  //TODO: Read and use CLLocationManager
+    // Get authorization
+    CLLocationManager *manager = [LibraryAPI sharedInstance].locationManager;
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        [manager startUpdatingLocation];
+    }
     self.mapView.showsUserLocation = YES;
 }
 
