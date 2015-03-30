@@ -119,34 +119,55 @@
     CGRect rect = self.hourSlider.slider.frame;
     self.hourSlider.slider.frame = CGRectMake(rect.origin.x, 7, [UIScreen mainScreen].bounds.size.width - 90 , rect.size.height);
     
+    // Datepicker set dates
+    //TODO cleaner
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustDatePicker) name:@"InitRequestReturned" object:nil];
+    [self adjustDatePicker];
     
-    // CHANGE DATES HERE! //TODO make easier accessible
-//    [self.datepicker fillDatesFromCurrentDate:90];
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    // Testing
-    NSDate *startDate = [dateFormatter dateFromString:@"04-10-2014"];
-    NSDate *endDate = [dateFormatter dateFromString:@"04-13-2014"];
     
-    // Production
-//    NSDate *startDate = [dateFormatter dateFromString:@"04-16-2015"];
-//    NSDate *endDate = [dateFormatter dateFromString:@"04-19-2015"];
+}
+
+-(void)adjustDatePicker {
+    
+    NSDate *startDate;
+    NSDate *endDate;
+    
+    if ([LibraryAPI sharedInstance].rangeStartDate) {
+        startDate = [LibraryAPI sharedInstance].rangeStartDate;
+        endDate = [LibraryAPI sharedInstance].rangeEndDate;
+        
+    } else {
+        // CHANGE DATES HERE!  // gets adjusted based on server response
+        //    [self.datepicker fillDatesFromCurrentDate:90];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+        
+        // Testing
+//        startDate = [dateFormatter dateFromString:@"04-10-2014"];
+//        endDate = [dateFormatter dateFromString:@"04-13-2014"];
+        
+        // Production
+        startDate = [dateFormatter dateFromString:@"04-16-2015"];
+        endDate = [dateFormatter dateFromString:@"04-19-2015"];
+    }
+    
     
     NSDate *dateToday = [NSDate date];
     NSInteger totalDays = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit
-                                    fromDate:startDate
-                                      toDate:endDate
-                                     options:0] day];
-    NSInteger indexDay = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit
                                                            fromDate:startDate
-                                                             toDate:dateToday
+                                                             toDate:endDate
                                                             options:0] day];
+    NSInteger indexDay = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit
+                                                          fromDate:startDate
+                                                            toDate:dateToday
+                                                           options:0] day];
     [self.datepicker fillDatesFromDate:startDate numberOfDays:4];
     
     if (!(indexDay >= 0 && indexDay <= totalDays)) {
         indexDay = 0;
     }
     [self.datepicker selectDateAtIndex:indexDay];
+    
 }
 
 -(void)updateSelectedDate {
