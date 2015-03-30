@@ -189,7 +189,7 @@
     //Set UISlider hours
     if (!self.userUsedSlider) {
         [self setUserIsScrollingTable:YES];
-        if ([LibraryAPI sharedInstance].eventClass == Discovery  ) {
+        if ([LibraryAPI sharedInstance].eventClass == Explore  ) {
             NSArray *visibleCells = [self.tableView visibleCells];
             if (!([visibleCells count] > 0)) {
                 return;

@@ -89,7 +89,7 @@
     
     [self.mapView removeAnnotations:self.mapView.annotations]; //This also removes the user location pin!!!
     NSArray *eventsArray;
-    if (self.api.eventClass == Discovery) {
+    if (self.api.eventClass == Explore) {
         eventsArray = [self.api.eventSections objectForKey:self.selectedHour];
     } else {
         eventsArray = self.api.events;

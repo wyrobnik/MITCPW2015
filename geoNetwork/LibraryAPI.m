@@ -62,8 +62,8 @@
 +(NSString*)convertToString:(EventsDiscoveryBookmarkedFollowed)eventClass {
     NSString *result = nil;
         switch (eventClass) {
-    case Discovery:
-        result = @"Discover";
+    case Explore:
+        result = @"Explore";
         break;
     case Bookmarked:
         result = @"Bookmarked";
@@ -80,7 +80,7 @@
     self = [super init];
     if (self) {
         _eventsQueryConstraints = [[EventsQueryConstraints alloc] init];
-        _eventClass = Discovery;
+        _eventClass = Explore;
     }
     return self;
 }
@@ -197,7 +197,7 @@
         };
     
     switch (self.eventClass) {
-        case Discovery:
+        case Explore:
             [ServerFetcher fetchEventsArrayWithConstraints:[self.eventsQueryConstraints eventConstraintDictionary] withCallback:discoverCallback];
             break;
         case Bookmarked:
@@ -238,7 +238,7 @@
 -(void)setEventClass:(EventsDiscoveryBookmarkedFollowed)eventClass withErrorHandler:(id)target selector:(SEL)selector {
     _eventClass = eventClass;
     switch (eventClass) {
-        case Discovery:
+        case Explore:
             self.events = self.discoverEventsArray;
             break;
         case Bookmarked:

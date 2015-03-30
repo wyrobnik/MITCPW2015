@@ -14,7 +14,7 @@
 #import "Event.h"
 #import "EventsQueryConstraints.h"
 
-typedef enum {Discovery, Bookmarked} EventsDiscoveryBookmarkedFollowed;
+typedef enum {Explore, Bookmarked} EventsDiscoveryBookmarkedFollowed;
 
 @interface LibraryAPI : NSObject<CLLocationManagerDelegate>
 
