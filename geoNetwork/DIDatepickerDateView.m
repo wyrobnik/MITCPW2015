@@ -33,6 +33,7 @@ const CGFloat kDIDatepickerSelectionLineWidth = 51.*5/4; //TODO makes this depen
 - (void)setupViews
 {
     [self addTarget:self action:@selector(dateWasSelected) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 - (void)setDate:(NSDate *)date

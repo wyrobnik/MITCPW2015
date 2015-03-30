@@ -188,6 +188,8 @@
 			children = (
 				0E9171161A38ADBD00ECB044 /* DIDatepicker.h */,
 				0E9171171A38ADBD00ECB044 /* DIDatepicker.m */,
+				0E9171191A38ADC900ECB044 /* DIDatepickerDateView.h */,
+				0E91711A1A38ADC900ECB044 /* DIDatepickerDateView.m */,
 				0EBD23011A2CF6E800A20B85 /* SDWebImage */,
 			);
 			name = imported3rdParty;
@@ -295,8 +297,6 @@
 				0ED44DE01AA949C900EA0628 /* Extensions */,
 				0E7C23911A78B66000AC5359 /* DateViewForBarButton.h */,
 				0E7C23921A78B66000AC5359 /* DateViewForBarButton.m */,
-				0E9171191A38ADC900ECB044 /* DIDatepickerDateView.h */,
-				0E91711A1A38ADC900ECB044 /* DIDatepickerDateView.m */,
 				0E22E0851A0EACFF00CD85B5 /* EventTableViewCell.h */,
 				0E22E0861A0EACFF00CD85B5 /* EventTableViewCell.m */,
 				0E22E0871A0EACFF00CD85B5 /* EventTableViewCell.xib */,

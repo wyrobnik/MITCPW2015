@@ -124,8 +124,13 @@
 //    [self.datepicker fillDatesFromCurrentDate:90];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    // Testing
     NSDate *startDate = [dateFormatter dateFromString:@"04-10-2014"];
     NSDate *endDate = [dateFormatter dateFromString:@"04-13-2014"];
+    
+    // Production
+//    NSDate *startDate = [dateFormatter dateFromString:@"04-16-2015"];
+//    NSDate *endDate = [dateFormatter dateFromString:@"04-19-2015"];
     
     NSDate *dateToday = [NSDate date];
     NSInteger totalDays = [[[NSCalendar currentCalendar] components:NSDayCalendarUnit

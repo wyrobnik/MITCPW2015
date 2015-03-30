@@ -223,8 +223,15 @@ const CGFloat kDIDatepickerSpaceBetweenItems = 15.;
 - (void)updateDatesView
 {
     [self.datesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
+    
     CGFloat currentItemXPosition = kDIDatepickerSpaceBetweenItems;
+    
+    // Center dates if not filling screen
+    CGFloat widthOfAllDates = [self.dates count]*(kDIDatepickerItemWidth + kDIDatepickerSpaceBetweenItems);
+    if (widthOfAllDates < self.datesScrollView.frame.size.width) {
+        currentItemXPosition += (self.datesScrollView.frame.size.width - widthOfAllDates - kDIDatepickerSpaceBetweenItems)/2;
+    }
+    
     for (NSDate *date in self.dates) {
         DIDatepickerDateView *dateView = [[DIDatepickerDateView alloc] initWithFrame:CGRectMake(currentItemXPosition, 0, kDIDatepickerItemWidth, self.frame.size.height)];
         dateView.date = date;

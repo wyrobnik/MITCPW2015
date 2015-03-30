@@ -42,20 +42,20 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void)setup {
     self.tableView.delegate = self;
     
-    //Handle inset issues
-    [self.tableView setContentOffset:CGPointMake(0, 200)]; //TODO this is not clean
-    
     self.api = [LibraryAPI sharedInstance];
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
     //TODO: If no data/count 0, then handle
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    // TODO hacky! Rather do this once somewhere
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 }
 
 -(void)setHourSlider:(UISlider *)hourSlider {
@@ -104,7 +104,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [LibraryAPI sharedInstance].sortedEventSections.count;
+    return self.api.sortedEventSections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -125,7 +125,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     // Background color
-    view.tintColor = [UIColor blackColor];
+    view.tintColor = [UIColor colorWithRed:19.0/256.0 green:19.0/256.0 blue:19.0/256.0 alpha:1];  // Black (#131313)
     // Text Color
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
     [header.textLabel setTextColor:[UIColor whiteColor]];
