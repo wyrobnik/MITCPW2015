@@ -20,6 +20,8 @@
 @property (strong, nonatomic, readwrite) NSArray *events;
 @property (strong, nonatomic, readwrite) NSMutableDictionary* eventSections;
 
+@property (strong, nonatomic, readwrite) NSMutableDictionary* bookmarkedEvents;
+
 //For quick switch!
 @property (strong, nonatomic) NSArray *discoverEventsArray;
 @property (strong, nonatomic) NSArray *rightNowEventsArray;
@@ -121,7 +123,8 @@
 }
 
 -(void)storeBookmarkedEventsPersistent {
-    self.bookmarkedEventsArray = [self convertArrayElementsToEvents:[self.bookmarkedEvents allValues]];
+    NSArray *bookmarkedEventsKeys = [self.bookmarkedEvents allValues];
+    self.bookmarkedEventsArray = [self convertArrayElementsToEvents:bookmarkedEventsKeys];
     if (self.eventClass == Bookmarked)
         self.events = self.bookmarkedEventsArray;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -197,24 +200,37 @@
             if ([eventsData isKindOfClass:[NSArray class]])
                 self.discoverEventsArray = [self convertArrayElementsToEvents:eventsData];
             self.events = self.discoverEventsArray;
-            
-            
         };
-
     void (^rightNowCallback)(NSData *data, NSURLResponse *response, NSError *error) =
-    ^void(NSData *data, NSURLResponse *response, NSError *error) {
-        if(error) {
-            if ([target respondsToSelector:selector]) {
-                [target performSelector:selector withObject:error afterDelay:0.0];
+        ^void(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error) {
+                if ([target respondsToSelector:selector]) {
+                    [target performSelector:selector withObject:error afterDelay:0.0];
+                }
+                return;
             }
-            return;
-        }
-        id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
-        NSLog(@"Discover Data = %@",eventsData);
-        if ([eventsData isKindOfClass:[NSArray class]])
-            self.rightNowEventsArray = [self convertArrayElementsToEvents:eventsData];
-        self.events = self.rightNowEventsArray;
-    };
+            id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
+            NSLog(@"RightNow Data = %@",eventsData);
+            if ([eventsData isKindOfClass:[NSArray class]])
+                self.rightNowEventsArray = [self convertArrayElementsToEvents:eventsData];
+            self.events = self.rightNowEventsArray;
+        };
+    void (^bookmarkedCallback)(NSData *data, NSURLResponse *response, NSError *error) =
+        ^void(NSData *data, NSURLResponse *response, NSError *error) {
+            id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
+            NSLog(@"Bookmarked Data = %@",eventsData);
+            if ([eventsData isKindOfClass:[NSArray class]]) {
+                NSMutableDictionary *eventsIdToEventDict = [[NSMutableDictionary alloc] init];
+                NSArray *tempArray = [self convertArrayElementsToEvents:eventsData];
+                self.events = tempArray;
+                for (Event *event in tempArray) {
+                    [eventsIdToEventDict setObject:event.jsonEvent forKey:event.event_id];
+                }
+                // Store update data
+                self.bookmarkedEvents = eventsIdToEventDict;
+                [self storeBookmarkedEventsPersistent];
+            }
+        };
     
     switch (self.eventClass) {
         case Explore:
@@ -227,8 +243,11 @@
             //TODO reload events data, after time period!!!!
             self.bookmarkedEventsArray = [self convertArrayElementsToEvents:[self.bookmarkedEvents allValues]];
             self.events = self.bookmarkedEventsArray;
-            break;
-        default:
+            NSMutableSet *setOfEvents = [[NSMutableSet alloc] initWithCapacity:[self.bookmarkedEventsArray count]];
+            for (Event *event in self.bookmarkedEventsArray) {
+                 [setOfEvents addObject:event.event_id];
+            }
+            [ServerFetcher fetchListOfEvents:setOfEvents withCallback:bookmarkedCallback];  // This reloads bookmareked events
             break;
     }
 }

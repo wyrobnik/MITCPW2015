@@ -125,10 +125,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     // Background color
-    view.tintColor = [UIColor colorWithRed:19.0/256.0 green:19.0/256.0 blue:19.0/256.0 alpha:1];  // Black (#131313)
+//    view.tintColor = [UIColor colorWithRed:19.0/256.0 green:19.0/256.0 blue:19.0/256.0 alpha:1];  // Black (#131313)
+    
     // Text Color
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
     [header.textLabel setTextColor:[UIColor whiteColor]];
+    header.backgroundView.backgroundColor = [UIColor colorWithRed:19.0/256.0 green:19.0/256.0 blue:19.0/256.0 alpha:0.9];  // Black (#131313)
+    
 
 }
 
