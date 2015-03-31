@@ -78,6 +78,25 @@ static NSArray *filterTags;
     return outputDictionary;
 }
 
+-(NSDictionary*)eventConstraintDictionaryRightNow {
+    NSMutableDictionary *outputDictionary = [[NSMutableDictionary alloc] initWithDictionary:[self eventConstraintDictionary]];
+    
+    //Testing
+//    NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
+//    [dateFormater setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+//    NSDate *now = [dateFormater dateFromString:@"2014-04-11 17:36:00"];
+    
+    NSDate *now = [NSDate date];
+    NSDate *nowPlus30Min = [now dateByAddingTimeInterval:30*60];
+    
+    [outputDictionary setObject:[NSString stringWithFormat:@"%@", now]
+                         forKey:START_TIME];
+    [outputDictionary setObject:[NSString stringWithFormat:@"%@", nowPlus30Min]
+                         forKey:END_TIME];
+    
+    return outputDictionary;
+}
+
 
 
 @end

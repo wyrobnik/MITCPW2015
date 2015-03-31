@@ -30,6 +30,7 @@ struct DistanceFromLocationStruct {
 +(void)setFilterTags:(NSArray*)filterTags;
 
 -(NSDictionary*)eventConstraintDictionary;
+-(NSDictionary*)eventConstraintDictionaryRightNow;
 
 -(void)resetConstraints;
 

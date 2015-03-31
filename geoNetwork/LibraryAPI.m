@@ -22,6 +22,7 @@
 
 //For quick switch!
 @property (strong, nonatomic) NSArray *discoverEventsArray;
+@property (strong, nonatomic) NSArray *rightNowEventsArray;
 @property (strong, nonatomic) NSArray *bookmarkedEventsArray;
 //TODO add dictionary for quick switch
 
@@ -61,12 +62,15 @@
 
 +(NSString*)convertToString:(EventsDiscoveryBookmarkedFollowed)eventClass {
     NSString *result = nil;
-        switch (eventClass) {
+    switch (eventClass) {
     case Explore:
         result = @"Explore";
         break;
     case Bookmarked:
         result = @"Bookmarked";
+        break;
+    case RightNow:
+        result = @"Right Now";
         break;
     default:
         result = @"unknown";
@@ -194,11 +198,30 @@
                 self.discoverEventsArray = [self convertArrayElementsToEvents:eventsData];
             self.events = self.discoverEventsArray;
             
+            
         };
+
+    void (^rightNowCallback)(NSData *data, NSURLResponse *response, NSError *error) =
+    ^void(NSData *data, NSURLResponse *response, NSError *error) {
+        if(error) {
+            if ([target respondsToSelector:selector]) {
+                [target performSelector:selector withObject:error afterDelay:0.0];
+            }
+            return;
+        }
+        id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
+        NSLog(@"Discover Data = %@",eventsData);
+        if ([eventsData isKindOfClass:[NSArray class]])
+            self.rightNowEventsArray = [self convertArrayElementsToEvents:eventsData];
+        self.events = self.rightNowEventsArray;
+    };
     
     switch (self.eventClass) {
         case Explore:
             [ServerFetcher fetchEventsArrayWithConstraints:[self.eventsQueryConstraints eventConstraintDictionary] withCallback:discoverCallback];
+            break;
+        case RightNow:
+            [ServerFetcher fetchEventsArrayWithConstraints:[self.eventsQueryConstraints eventConstraintDictionaryRightNow] withCallback:rightNowCallback];
             break;
         case Bookmarked:
             //TODO reload events data, after time period!!!!
@@ -241,6 +264,8 @@
         case Explore:
             self.events = self.discoverEventsArray;
             break;
+        case RightNow:
+            self.events = self.rightNowEventsArray;
         case Bookmarked:
             self.events = self.bookmarkedEventsArray;
             break;

@@ -181,7 +181,7 @@
     LibraryAPI *api = [LibraryAPI sharedInstance];
     
     title = [LibraryAPI convertToString:api.eventClass];
-    if (api.eventClass == Bookmarked) {
+    if (api.eventClass != Explore) {
         datePickingEnabled = NO;
     }
     

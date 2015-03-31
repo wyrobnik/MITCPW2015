@@ -76,14 +76,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return  [LibraryAPI sharedInstance].eventClass == Explore ? 2 : 1;
+    return  [LibraryAPI sharedInstance].eventClass == Explore || RightNow ? 2 : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     switch (section) {
         case 0:
-            return 2;
+            return 3;
             break;
         case 1:  //Filters
             return [[EventsQueryConstraints filterTags] count]; //+2;
