@@ -57,7 +57,16 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
     self.refreshControl.tintColor = [UIColor blackColor];
-    [self.refreshControl addTarget:[LibraryAPI sharedInstance] action:@selector(reloadEventsWithErrorHandler:selector:) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(refreshAction) forControlEvents:UIControlEventValueChanged];
+    
+}
+
+-(void)refreshAction {
+    //Hacky, TODO fix (decouple)
+    if ([self.parentViewController.parentViewController respondsToSelector:@selector(handleConnectionError:)])
+        [[LibraryAPI sharedInstance] reloadEventsWithErrorHandler:self.parentViewController.parentViewController selector:@selector(handleConnectionError:)];
+    else
+        [self.refreshControl endRefreshing];
     
 }
 

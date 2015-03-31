@@ -39,27 +39,38 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _obj = [[LibraryAPI alloc] init];
+        [_obj serverInitCall];
         
+        });
+    return _obj;
+}
+
+// Get filters and range of dates (once successful never again
+-(void)serverInitCall {
+    static BOOL initCallWasSuccessful = NO;
+    if (!initCallWasSuccessful) {
         // Make server init call to get filter tags
         [ServerFetcher initRequestwithCallback:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                return;
+            }
             
             NSDictionary *initDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSLog(@"Filters = %@", initDic);
             
-            //Set date range 
+            //Set date range
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-            [_obj setRangeStartDate:[dateFormatter dateFromString:[initDic valueForKey:@"start_date"]]];
-            [_obj setRangeEndDate:[dateFormatter dateFromString:[initDic valueForKey:@"end_date"]]];
+            [self setRangeStartDate:[dateFormatter dateFromString:[initDic valueForKey:@"start_date"]]];
+            [self setRangeEndDate:[dateFormatter dateFromString:[initDic valueForKey:@"end_date"]]];
             
             [EventsQueryConstraints setFilterTags:[[[initDic valueForKey:FILTERS_KEY] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
             
             // TODO make this cleaner, or remove observers after seeing init notification
             [[NSNotificationCenter defaultCenter] postNotificationName:@"InitRequestReturned" object:self];
-            
+            initCallWasSuccessful = YES;
         }];
-    });
-    return _obj;
+    }
 }
 
 +(NSString*)convertToString:(EventsDiscoveryBookmarkedFollowed)eventClass {
@@ -187,10 +198,13 @@
  * Reload events data (with set parameters)
  */
 -(void)reloadEventsWithErrorHandler:(id)target selector:(SEL)selector {
+    [self serverInitCall];  //In case internet connection was not successful
+    
     void (^discoverCallback)(NSData *data, NSURLResponse *response, NSError *error) =
         ^void(NSData *data, NSURLResponse *response, NSError *error) {
             if(error) {
                 if ([target respondsToSelector:selector]) {
+                    self.events = self.events;  //To send notification
                     [target performSelector:selector withObject:error afterDelay:0.0];
                 }
                 return;
@@ -205,6 +219,7 @@
         ^void(NSData *data, NSURLResponse *response, NSError *error) {
             if(error) {
                 if ([target respondsToSelector:selector]) {
+                    self.events = self.events; //To send notification
                     [target performSelector:selector withObject:error afterDelay:0.0];
                 }
                 return;
@@ -232,6 +247,8 @@
             }
         };
     
+    
+    
     switch (self.eventClass) {
         case Explore:
             [ServerFetcher fetchEventsArrayWithConstraints:[self.eventsQueryConstraints eventConstraintDictionary] withCallback:discoverCallback];
@@ -240,7 +257,6 @@
             [ServerFetcher fetchEventsArrayWithConstraints:[self.eventsQueryConstraints eventConstraintDictionaryRightNow] withCallback:rightNowCallback];
             break;
         case Bookmarked:
-            //TODO reload events data, after time period!!!!
             self.bookmarkedEventsArray = [self convertArrayElementsToEvents:[self.bookmarkedEvents allValues]];
             self.events = self.bookmarkedEventsArray;
             NSMutableSet *setOfEvents = [[NSMutableSet alloc] initWithCapacity:[self.bookmarkedEventsArray count]];

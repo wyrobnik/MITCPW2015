@@ -78,7 +78,7 @@
     self.eventsTableVC.view.frame = self.containerViewController.view.bounds;
     [self.containerViewController.view addSubview:self.currentVC.view];
     [self.containerViewController addChildViewController:self.currentVC];
-    [self.currentVC didMoveToParentViewController:self.containerViewController];
+    [self.currentVC didMoveToParentViewController:self];
     
     //Counteract inset of tableview
     [((UITableViewController*)self.eventsTableVC).tableView setContentInset:UIEdgeInsetsMake(-belowNavigationBarY, 0, 0, 0)];
@@ -396,14 +396,5 @@
 {
 }
  */
-
-//-(UIStatusBarStyle)preferredStatusBarStyle {
-//    return UIStatusBarStyleLightContent;
-//}
-//
-//-(BOOL)prefersStatusBarHidden {
-//    return NO;
-//}
-
 
 @end
