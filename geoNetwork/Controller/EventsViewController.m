@@ -221,9 +221,17 @@
     
     BOOL tableViewIsCurrent = [self.currentVC isEqual:self.eventsTableVC];
     [self.containerViewController addChildViewController:newController];
+    
+    CGFloat transitionDuration = 0.5;
+    
+    // If iPhone4 or 4s then don't flip (bug otherwise)
+    if ([UIScreen mainScreen].bounds.size.height == 480) {
+        transitionDuration = 0.0;  //To prevent animation duration
+    }
+    
     [self.containerViewController transitionFromViewController:self.currentVC
                                               toViewController:newController
-                                                      duration:0.5
+                                                      duration:transitionDuration
                                                        options:!tableViewIsCurrent ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
                                                     animations:^(void) {}
                                                     completion:^(BOOL finished) {
