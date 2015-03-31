@@ -37,6 +37,8 @@
 @property (strong, nonatomic) UIViewController *currentVC;
 @property (nonatomic) BOOL viewSwapInProgress;  //to disable while happening
 
+@property (strong, nonatomic) UIView *noInternetView;
+
 @end
 
 @implementation EventsViewController
@@ -307,9 +309,7 @@
 -(void)handleConnectionError:(NSError*)error {
     NSLog(@"%@", error);
     //TODO
-//    UIView *errorView = [[UIView alloc] initWithFrame:self.view.frame];
-//    errorView.backgroundColor = [UIColor grayColor];
-//    [self.view addSubview:[[AlertView alloc] initWithFrame:self.view.frame]];
+//    self.noInternetView.hidden = NO;
 }
 
 //Copied from stackoverflow
@@ -377,6 +377,16 @@
         self.currentVC.view.frame = self.containerViewController.view.bounds;
         
     }];
+}
+
+-(UIView*)noInternetView {
+    if (!_noInternetView) {
+        _noInternetView = [[[NSBundle mainBundle] loadNibNamed:@"noInternet" owner:self options:nil] objectAtIndex:0];
+        _noInternetView.frame = self.view.frame;
+        [self.view addSubview:_noInternetView];
+        _noInternetView.hidden = YES;
+    }
+    return _noInternetView;
 }
 
 #pragma mark - Navigation

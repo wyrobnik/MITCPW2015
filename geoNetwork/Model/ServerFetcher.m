@@ -41,7 +41,12 @@
     
     if (!error) {
         NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:callback];
+                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                                                callback(data, response, error); //Callback
+                                                            }];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         [dataTask resume];
     }
 }

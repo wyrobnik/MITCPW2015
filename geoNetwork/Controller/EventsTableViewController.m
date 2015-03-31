@@ -51,6 +51,14 @@
     //When reload gets called in LibraryAPI, get's notified and reloads data in tableview (observer pattern with notification)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"EventsChangedNotification" object:nil];
     //TODO: If no data/count 0, then handle
+    
+    
+    //Pull down to refresh
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor whiteColor];
+    self.refreshControl.tintColor = [UIColor blackColor];
+    [self.refreshControl addTarget:[LibraryAPI sharedInstance] action:@selector(reloadEventsWithErrorHandler:selector:) forControlEvents:UIControlEventValueChanged];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -90,6 +98,7 @@
 
 //This is called when class is notified of reloaded event data
 -(void)reloadData {
+    [self.refreshControl endRefreshing];
     //Hacky
     [UIView animateWithDuration:0 animations:^{
         [self.tableView reloadData];

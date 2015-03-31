@@ -16,6 +16,7 @@
 		0E22E0881A0EACFF00CD85B5 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E22E0861A0EACFF00CD85B5 /* EventTableViewCell.m */; };
 		0E22E0891A0EACFF00CD85B5 /* EventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E22E0871A0EACFF00CD85B5 /* EventTableViewCell.xib */; };
 		0E32779819AD22A2003C713D /* EventsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E32779719AD22A2003C713D /* EventsMapViewController.m */; };
+		0E5334131ACA6C85004A73D2 /* noInternet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5334121ACA6C85004A73D2 /* noInternet.xib */; };
 		0E5ECF821A2273AC008E83CD /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5ECF811A2273AC008E83CD /* Event.m */; };
 		0E5ECF851A229B63008E83CD /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5ECF841A229B63008E83CD /* SidebarTableViewController.m */; };
 		0E754C641A33996500600E27 /* UIColor_Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E754C631A33996500600E27 /* UIColor_Extension.m */; };
@@ -76,6 +77,7 @@
 		0E22E0871A0EACFF00CD85B5 /* EventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EventTableViewCell.xib; path = View/EventTableViewCell.xib; sourceTree = "<group>"; };
 		0E32779619AD22A2003C713D /* EventsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventsMapViewController.h; path = Controller/EventsMapViewController.h; sourceTree = "<group>"; };
 		0E32779719AD22A2003C713D /* EventsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventsMapViewController.m; path = Controller/EventsMapViewController.m; sourceTree = "<group>"; };
+		0E5334121ACA6C85004A73D2 /* noInternet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = noInternet.xib; sourceTree = "<group>"; };
 		0E5ECF801A2273AC008E83CD /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = geoNetwork/Model/Event.h; sourceTree = "<group>"; };
 		0E5ECF811A2273AC008E83CD /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = geoNetwork/Model/Event.m; sourceTree = "<group>"; };
 		0E5ECF831A229B63008E83CD /* SidebarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SidebarTableViewController.h; path = Controller/SidebarTableViewController.h; sourceTree = "<group>"; };
@@ -181,6 +183,14 @@
 				0E1578961A4C3BE100EE8951 /* EventsQueryConstraints.m */,
 			);
 			name = "LibraryAPI_class(Fascade)";
+			sourceTree = "<group>";
+		};
+		0E5334111ACA6C6F004A73D2 /* Empty States */ = {
+			isa = PBXGroup;
+			children = (
+				0E5334121ACA6C85004A73D2 /* noInternet.xib */,
+			);
+			name = "Empty States";
 			sourceTree = "<group>";
 		};
 		0EAEC78B1A38CC1400504C49 /* imported3rdParty */ = {
@@ -294,6 +304,7 @@
 		0EB019E7199E47AE005D36D0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0E5334111ACA6C6F004A73D2 /* Empty States */,
 				0ED44DE01AA949C900EA0628 /* Extensions */,
 				0E7C23911A78B66000AC5359 /* DateViewForBarButton.h */,
 				0E7C23921A78B66000AC5359 /* DateViewForBarButton.m */,
@@ -454,6 +465,7 @@
 				0EBE0B961A6C6F0E00DE2C36 /* SidebarNavigationCustomView.xib in Resources */,
 				0EB019C9199E4738005D36D0 /* Images.xcassets in Resources */,
 				0EB019BB199E4738005D36D0 /* InfoPlist.strings in Resources */,
+				0E5334131ACA6C85004A73D2 /* noInternet.xib in Resources */,
 				0EB019C4199E4738005D36D0 /* Main.storyboard in Resources */,
 				0E9C80AC1AA0CB11002EBE1E /* Launch Screen.xib in Resources */,
 			);
