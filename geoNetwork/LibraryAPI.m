@@ -202,11 +202,11 @@
     
     void (^discoverCallback)(NSData *data, NSURLResponse *response, NSError *error) =
         ^void(NSData *data, NSURLResponse *response, NSError *error) {
+            if ([target respondsToSelector:selector]) {
+                [target performSelector:selector withObject:error afterDelay:0.0];  //Handler should handle noError too!
+            }
             if(error) {
-                if ([target respondsToSelector:selector]) {
-                    self.events = self.events;  //To send notification
-                    [target performSelector:selector withObject:error afterDelay:0.0];
-                }
+                self.events = self.events;  //To send notification
                 return;
             }
             id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
@@ -217,11 +217,11 @@
         };
     void (^rightNowCallback)(NSData *data, NSURLResponse *response, NSError *error) =
         ^void(NSData *data, NSURLResponse *response, NSError *error) {
+            if ([target respondsToSelector:selector]) {
+                [target performSelector:selector withObject:error afterDelay:0.0];  //Handler should handle noError too!
+            }
             if(error) {
-                if ([target respondsToSelector:selector]) {
-                    self.events = self.events; //To send notification
-                    [target performSelector:selector withObject:error afterDelay:0.0];
-                }
+                self.events = self.events;  //To send notification
                 return;
             }
             id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];

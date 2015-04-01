@@ -15,6 +15,7 @@
 #import "DateViewForBarButton.h"
 #import "UIColor_Extension.h"
 #import "HourSlider.h"
+#import "NoInternetViewController.h"
 
 @interface EventsViewController ()
 
@@ -37,7 +38,9 @@
 @property (strong, nonatomic) UIViewController *currentVC;
 @property (nonatomic) BOOL viewSwapInProgress;  //to disable while happening
 
-@property (strong, nonatomic) UIView *noInternetView;
+@property (strong, nonatomic) NoInternetViewController *noInternetVC; //TODO make these lazy!
+@property (strong, nonatomic) UIView *noBookmarkedView;
+@property (strong, nonatomic) UIView *noRightNowView;
 
 @end
 
@@ -79,6 +82,28 @@
     [self.containerViewController.view addSubview:self.currentVC.view];
     [self.containerViewController addChildViewController:self.currentVC];
     [self.currentVC didMoveToParentViewController:self];
+    
+    // Empty states setup!
+    // Bookmarked
+    self.noBookmarkedView = [[[NSBundle mainBundle] loadNibNamed:@"NoBookmarked" owner:self options:nil] objectAtIndex:0];
+    self.noBookmarkedView.frame = self.view.frame;
+    self.noBookmarkedView.hidden = YES;
+    [self.view addSubview:self.noBookmarkedView];
+    
+    // Right Now
+    self.noRightNowView = [[[NSBundle mainBundle] loadNibNamed:@"NoRightNow" owner:self options:nil] objectAtIndex:0];
+    self.noRightNowView.frame = self.view.frame;
+    self.noRightNowView.hidden = YES;
+    [self.view addSubview:self.noRightNowView];
+    
+    
+    // No internet controller setup
+    self.noInternetVC = [[NoInternetViewController alloc] initWithNibName:@"NoInternetViewController" bundle:[NSBundle mainBundle]];
+    //        [[[NSBundle mainBundle] loadNibNamed:@"NoInternetViewController" owner:self options:nil] objectAtIndex:0];
+    self.noInternetVC.view.frame = self.view.frame;
+    [self.view addSubview:self.noInternetVC.view];
+    self.noInternetVC.view.hidden = YES;
+    [self.noInternetVC.retryButton addTarget:self action:@selector(retryLoadingEvents) forControlEvents:UIControlEventTouchUpInside];
     
     //Counteract inset of tableview
     [((UITableViewController*)self.eventsTableVC).tableView setContentInset:UIEdgeInsetsMake(-belowNavigationBarY, 0, 0, 0)];
@@ -177,10 +202,27 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    // Remove all empty state views (they will reappear if neccessary
+    self.noInternetVC.view.hidden = YES;
+    
+    LibraryAPI *api = [LibraryAPI sharedInstance];
+    //Hacky! TODO cleaner
+    self.noBookmarkedView.hidden = !([api.events count] == 0 && api.eventClass == Bookmarked);
+//    self.noBookmarkedView.hidden = YES;
+//    if ([api.events count] == 0 && api.eventClass == Bookmarked)
+//        self.noBookmarkedView.hidden = NO;
+    
+    //Hacky! TODO cleaner
+    self.noRightNowView.hidden = !([api.events count] == 0 && api.eventClass == RightNow);
+//    self.noRightNowView.hidden = YES;
+//    if ([api.events count] == 0 && api.eventClass == RightNow)
+//        self.noRightNowView.hidden = NO;
+
+    
+    
     //Check whether to show date picker
     NSString *title;
     BOOL datePickingEnabled = YES;
-    LibraryAPI *api = [LibraryAPI sharedInstance];
     
     title = [LibraryAPI convertToString:api.eventClass];
     if (api.eventClass != Explore) {
@@ -308,8 +350,7 @@
 
 -(void)handleConnectionError:(NSError*)error {
     NSLog(@"%@", error);
-    //TODO
-//    self.noInternetView.hidden = NO;
+    self.noInternetVC.view.hidden = !error;
 }
 
 //Copied from stackoverflow
@@ -337,12 +378,6 @@
         _selectedDate = [NSDate date];
     }
     return _selectedDate;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -379,14 +414,11 @@
     }];
 }
 
--(UIView*)noInternetView {
-    if (!_noInternetView) {
-        _noInternetView = [[[NSBundle mainBundle] loadNibNamed:@"noInternet" owner:self options:nil] objectAtIndex:0];
-        _noInternetView.frame = self.view.frame;
-        [self.view addSubview:_noInternetView];
-        _noInternetView.hidden = YES;
-    }
-    return _noInternetView;
+#pragma NoInternet
+-(void)retryLoadingEvents {
+//    self.noInternetVC.view.hidden = YES;
+    [[LibraryAPI sharedInstance] reloadEventsWithErrorHandler:self selector:@selector(handleConnectionError:)];
+    
 }
 
 #pragma mark - Navigation

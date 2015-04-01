@@ -16,13 +16,16 @@
 		0E22E0881A0EACFF00CD85B5 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E22E0861A0EACFF00CD85B5 /* EventTableViewCell.m */; };
 		0E22E0891A0EACFF00CD85B5 /* EventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E22E0871A0EACFF00CD85B5 /* EventTableViewCell.xib */; };
 		0E32779819AD22A2003C713D /* EventsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E32779719AD22A2003C713D /* EventsMapViewController.m */; };
-		0E5334131ACA6C85004A73D2 /* noInternet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5334121ACA6C85004A73D2 /* noInternet.xib */; };
 		0E5ECF821A2273AC008E83CD /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5ECF811A2273AC008E83CD /* Event.m */; };
 		0E5ECF851A229B63008E83CD /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5ECF841A229B63008E83CD /* SidebarTableViewController.m */; };
 		0E754C641A33996500600E27 /* UIColor_Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E754C631A33996500600E27 /* UIColor_Extension.m */; };
 		0E7C23931A78B66000AC5359 /* DateViewForBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7C23921A78B66000AC5359 /* DateViewForBarButton.m */; };
 		0E858D501AB77D7D005F35D7 /* HourSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E858D4F1AB77D7D005F35D7 /* HourSlider.m */; };
 		0E858D521AB77DA5005F35D7 /* HourSlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E858D511AB77DA5005F35D7 /* HourSlider.xib */; };
+		0E8BB6681ACB4B52000B3729 /* NoInternetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8BB6661ACB4B52000B3729 /* NoInternetViewController.m */; };
+		0E8BB6691ACB4B52000B3729 /* NoInternetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8BB6671ACB4B52000B3729 /* NoInternetViewController.xib */; };
+		0E8BB66B1ACB974D000B3729 /* NoBookmarked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8BB66A1ACB974D000B3729 /* NoBookmarked.xib */; };
+		0E8BB66D1ACB9DA9000B3729 /* NoRightNow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8BB66C1ACB9DA9000B3729 /* NoRightNow.xib */; };
 		0E9171181A38ADBD00ECB044 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9171171A38ADBD00ECB044 /* DIDatepicker.m */; };
 		0E91711B1A38ADC900ECB044 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E91711A1A38ADC900ECB044 /* DIDatepickerDateView.m */; };
 		0E9C80AC1AA0CB11002EBE1E /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C80AB1AA0CB11002EBE1E /* Launch Screen.xib */; };
@@ -77,7 +80,6 @@
 		0E22E0871A0EACFF00CD85B5 /* EventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EventTableViewCell.xib; path = View/EventTableViewCell.xib; sourceTree = "<group>"; };
 		0E32779619AD22A2003C713D /* EventsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventsMapViewController.h; path = Controller/EventsMapViewController.h; sourceTree = "<group>"; };
 		0E32779719AD22A2003C713D /* EventsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventsMapViewController.m; path = Controller/EventsMapViewController.m; sourceTree = "<group>"; };
-		0E5334121ACA6C85004A73D2 /* noInternet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = noInternet.xib; sourceTree = "<group>"; };
 		0E5ECF801A2273AC008E83CD /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = geoNetwork/Model/Event.h; sourceTree = "<group>"; };
 		0E5ECF811A2273AC008E83CD /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = geoNetwork/Model/Event.m; sourceTree = "<group>"; };
 		0E5ECF831A229B63008E83CD /* SidebarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SidebarTableViewController.h; path = Controller/SidebarTableViewController.h; sourceTree = "<group>"; };
@@ -89,6 +91,11 @@
 		0E858D4E1AB77D7D005F35D7 /* HourSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HourSlider.h; path = View/HourSlider.h; sourceTree = "<group>"; };
 		0E858D4F1AB77D7D005F35D7 /* HourSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HourSlider.m; path = View/HourSlider.m; sourceTree = "<group>"; };
 		0E858D511AB77DA5005F35D7 /* HourSlider.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HourSlider.xib; sourceTree = "<group>"; };
+		0E8BB6651ACB4B52000B3729 /* NoInternetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoInternetViewController.h; path = View/NoInternetViewController.h; sourceTree = "<group>"; };
+		0E8BB6661ACB4B52000B3729 /* NoInternetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoInternetViewController.m; path = View/NoInternetViewController.m; sourceTree = "<group>"; };
+		0E8BB6671ACB4B52000B3729 /* NoInternetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoInternetViewController.xib; path = View/NoInternetViewController.xib; sourceTree = "<group>"; };
+		0E8BB66A1ACB974D000B3729 /* NoBookmarked.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoBookmarked.xib; sourceTree = "<group>"; };
+		0E8BB66C1ACB9DA9000B3729 /* NoRightNow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoRightNow.xib; path = View/NoRightNow.xib; sourceTree = "<group>"; };
 		0E9171161A38ADBD00ECB044 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
 		0E9171171A38ADBD00ECB044 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		0E9171191A38ADC900ECB044 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
@@ -188,7 +195,11 @@
 		0E5334111ACA6C6F004A73D2 /* Empty States */ = {
 			isa = PBXGroup;
 			children = (
-				0E5334121ACA6C85004A73D2 /* noInternet.xib */,
+				0E8BB6651ACB4B52000B3729 /* NoInternetViewController.h */,
+				0E8BB6661ACB4B52000B3729 /* NoInternetViewController.m */,
+				0E8BB6671ACB4B52000B3729 /* NoInternetViewController.xib */,
+				0E8BB66A1ACB974D000B3729 /* NoBookmarked.xib */,
+				0E8BB66C1ACB9DA9000B3729 /* NoRightNow.xib */,
 			);
 			name = "Empty States";
 			sourceTree = "<group>";
@@ -463,11 +474,13 @@
 				0E858D521AB77DA5005F35D7 /* HourSlider.xib in Resources */,
 				0E22E0891A0EACFF00CD85B5 /* EventTableViewCell.xib in Resources */,
 				0EBE0B961A6C6F0E00DE2C36 /* SidebarNavigationCustomView.xib in Resources */,
+				0E8BB66B1ACB974D000B3729 /* NoBookmarked.xib in Resources */,
 				0EB019C9199E4738005D36D0 /* Images.xcassets in Resources */,
 				0EB019BB199E4738005D36D0 /* InfoPlist.strings in Resources */,
-				0E5334131ACA6C85004A73D2 /* noInternet.xib in Resources */,
 				0EB019C4199E4738005D36D0 /* Main.storyboard in Resources */,
 				0E9C80AC1AA0CB11002EBE1E /* Launch Screen.xib in Resources */,
+				0E8BB66D1ACB9DA9000B3729 /* NoRightNow.xib in Resources */,
+				0E8BB6691ACB4B52000B3729 /* NoInternetViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +501,7 @@
 				0EBD23321A2CF6E800A20B85 /* UIView+WebCacheOperation.m in Sources */,
 				0EA231C719A0BD8C00B194FE /* EventsViewController.m in Sources */,
 				0E22E0881A0EACFF00CD85B5 /* EventTableViewCell.m in Sources */,
+				0E8BB6681ACB4B52000B3729 /* NoInternetViewController.m in Sources */,
 				0EBE0B941A6C60C300DE2C36 /* SidebarNavigationCustomView.m in Sources */,
 				0EBD232E1A2CF6E800A20B85 /* UIImage+MultiFormat.m in Sources */,
 				0EBD232F1A2CF6E800A20B85 /* UIImage+WebP.m in Sources */,
