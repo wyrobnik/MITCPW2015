@@ -285,8 +285,6 @@
     //Notify observers of events changed!
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EventsChangedNotification" object:self];
     
-
-    
 }
 
 -(void)setEventClass:(EventsDiscoveryBookmarkedFollowed)eventClass {

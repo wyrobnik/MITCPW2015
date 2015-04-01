@@ -115,6 +115,8 @@
         [self scrollViewDidScroll:self.tableView]; //To set slide to correct value
         self.userIsScrollingTable = NO;
     }];
+    
+    CGRect tableViewFrame = self.tableView.frame;
 }
 
 #pragma mark - Table view data source

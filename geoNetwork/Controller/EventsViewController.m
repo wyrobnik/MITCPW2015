@@ -105,6 +105,9 @@
     self.noInternetVC.view.hidden = YES;
     [self.noInternetVC.retryButton addTarget:self action:@selector(retryLoadingEvents) forControlEvents:UIControlEventTouchUpInside];
     
+    // Update empty state if changed state
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventsChanged) name:@"EventsChangedNotification" object:nil];
+    
     //Counteract inset of tableview
     [((UITableViewController*)self.eventsTableVC).tableView setContentInset:UIEdgeInsetsMake(-belowNavigationBarY, 0, 0, 0)];
     
@@ -207,16 +210,16 @@
     
     LibraryAPI *api = [LibraryAPI sharedInstance];
     //Hacky! TODO cleaner
-    self.noBookmarkedView.hidden = !([api.events count] == 0 && api.eventClass == Bookmarked);
-//    self.noBookmarkedView.hidden = YES;
-//    if ([api.events count] == 0 && api.eventClass == Bookmarked)
-//        self.noBookmarkedView.hidden = NO;
-    
-    //Hacky! TODO cleaner
-    self.noRightNowView.hidden = !([api.events count] == 0 && api.eventClass == RightNow);
-//    self.noRightNowView.hidden = YES;
-//    if ([api.events count] == 0 && api.eventClass == RightNow)
-//        self.noRightNowView.hidden = NO;
+//    self.noBookmarkedView.hidden = !([api.events count] == 0 && api.eventClass == Bookmarked);
+////    self.noBookmarkedView.hidden = YES;
+////    if ([api.events count] == 0 && api.eventClass == Bookmarked)
+////        self.noBookmarkedView.hidden = NO;
+//    
+//    //Hacky! TODO cleaner
+//    self.noRightNowView.hidden = !([api.events count] == 0 && api.eventClass == RightNow);
+////    self.noRightNowView.hidden = YES;
+////    if ([api.events count] == 0 && api.eventClass == RightNow)
+////        self.noRightNowView.hidden = NO;
 
     
     
@@ -353,6 +356,25 @@
     self.noInternetVC.view.hidden = !error;
 }
 
+-(void)eventsChanged {
+    
+    // Remove all empty state views (they will reappear if neccessary
+    self.noInternetVC.view.hidden = YES;
+    
+    LibraryAPI *api = [LibraryAPI sharedInstance];
+    //Hacky! TODO cleaner
+    self.noBookmarkedView.hidden = !([api.events count] == 0 && api.eventClass == Bookmarked);
+    //    self.noBookmarkedView.hidden = YES;
+    //    if ([api.events count] == 0 && api.eventClass == Bookmarked)
+    //        self.noBookmarkedView.hidden = NO;
+    
+    //Hacky! TODO cleaner
+    self.noRightNowView.hidden = !([api.events count] == 0 && api.eventClass == RightNow);
+    //    self.noRightNowView.hidden = YES;
+    //    if ([api.events count] == 0 && api.eventClass == RightNow)
+    //        self.noRightNowView.hidden = NO;
+}
+
 //Copied from stackoverflow
 + (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
 {
@@ -390,28 +412,29 @@
 }
 
 -(void)setDatepickerOpen:(BOOL)datepickerOpen {
-    _datepickerOpen = datepickerOpen;
-    [UIView animateWithDuration:0.2 animations:^{
-        [self.datepicker setCenter:CGPointMake(self.datepicker.center.x,
-                                                       self.navigationController.navigationBar.frame.origin.y +
-                                               self.datepicker.frame.size.height/2 +(datepickerOpen)*44)];
-        
-        [self.hourSlider setCenter:CGPointMake(self.hourSlider.center.x,
-                                               [UIScreen mainScreen].bounds.size.height +
-                                               self.hourSlider.frame.size.height/2 -(datepickerOpen)*44)];
-        
-        CGRect containerFrame = self.containerViewController.view.frame;
-        containerFrame = CGRectMake(0,
-//                                    containerFrame.origin.y + (-1+2*datepickerOpen)*44,
-                                    self.navigationController.navigationBar.frame.origin.y +
-                                    self.datepicker.frame.size.height +(datepickerOpen)*44,
-                                    containerFrame.size.width,
-                                    containerFrame.size.height - 2*(-1+2*datepickerOpen)*44
-                                    );
-        self.containerViewController.view.frame = containerFrame;
-        self.currentVC.view.frame = self.containerViewController.view.bounds;
-        
-    }];
+    if (datepickerOpen != _datepickerOpen) { //Only execute if changed
+        _datepickerOpen = datepickerOpen;
+        [UIView animateWithDuration:0.2 animations:^{
+            [self.datepicker setCenter:CGPointMake(self.datepicker.center.x,
+                                                           self.navigationController.navigationBar.frame.origin.y +
+                                                   self.datepicker.frame.size.height/2 +(datepickerOpen)*44)];
+            
+            [self.hourSlider setCenter:CGPointMake(self.hourSlider.center.x,
+                                                   [UIScreen mainScreen].bounds.size.height +
+                                                   self.hourSlider.frame.size.height/2 -(datepickerOpen)*44)];
+            
+            CGRect containerFrame = self.containerViewController.view.frame;
+            containerFrame = CGRectMake(0,
+    //                                    containerFrame.origin.y + (-1+2*datepickerOpen)*44,
+                                        self.navigationController.navigationBar.frame.origin.y +
+                                        self.datepicker.frame.size.height +(datepickerOpen)*44,
+                                        containerFrame.size.width,
+                                        containerFrame.size.height - 2*(-1+2*datepickerOpen)*44
+                                        );
+            self.containerViewController.view.frame = containerFrame;
+            self.currentVC.view.frame = self.containerViewController.view.bounds;
+        }];
+    }
 }
 
 #pragma NoInternet
