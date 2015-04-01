@@ -206,7 +206,7 @@
                 [target performSelector:selector withObject:error afterDelay:0.0];  //Handler should handle noError too!
             }
             if(error) {
-                self.events = self.events;  //To send notification
+                self.events = self.discoverEventsArray;  //To send notification
                 return;
             }
             id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
@@ -221,7 +221,7 @@
                 [target performSelector:selector withObject:error afterDelay:0.0];  //Handler should handle noError too!
             }
             if(error) {
-                self.events = self.events;  //To send notification
+                self.events = self.rightNowEventsArray;  //To send notification
                 return;
             }
             id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
@@ -232,6 +232,8 @@
         };
     void (^bookmarkedCallback)(NSData *data, NSURLResponse *response, NSError *error) =
         ^void(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error)
+                return;
             id eventsData = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] valueForKey:EVENTS_KEY];
             NSLog(@"Bookmarked Data = %@",eventsData);
             if ([eventsData isKindOfClass:[NSArray class]]) {
@@ -293,18 +295,18 @@
 
 -(void)setEventClass:(EventsDiscoveryBookmarkedFollowed)eventClass withErrorHandler:(id)target selector:(SEL)selector {
     _eventClass = eventClass;
-    switch (eventClass) {
-        case Explore:
-            self.events = self.discoverEventsArray;
-            break;
-        case RightNow:
-            self.events = self.rightNowEventsArray;
-        case Bookmarked:
-            self.events = self.bookmarkedEventsArray;
-            break;
-        default:
-            break;
-    }
+//    switch (eventClass) {   // In error handler on reload these get set!
+//        case Explore:
+//            self.events = self.discoverEventsArray;
+//            break;
+//        case RightNow:
+//            self.events = self.rightNowEventsArray;
+//        case Bookmarked:
+//            self.events = self.bookmarkedEventsArray;
+//            break;
+//        default:
+//            break;
+//    }
     [self reloadEventsWithErrorHandler:target selector:selector];  //TODO: Reload discovery and following after time period
                                                             // TODO handle error connection
 }
