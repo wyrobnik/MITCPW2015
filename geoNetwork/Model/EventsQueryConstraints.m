@@ -7,6 +7,7 @@
 //
 
 #import "EventsQueryConstraints.h"
+#import "LibraryAPI.h" //For LocationManager
 
 #define DICTIONARY_ENTRIES 4
 #define START_TIME @"start_time"
@@ -17,6 +18,10 @@
 #define LONGITUDE @"longitude"
 #define LATITUDE @"latiude"
 #define DISTANCE_KM @"distance_km"
+
+//User location and UUID
+#define COORDINATES @"coordinates"
+#define UUID @"uuid"
 
 @implementation EventsQueryConstraints
 
@@ -73,8 +78,21 @@ static NSArray *filterTags;
                                       DISTANCE_KM : [NSNumber numberWithDouble:self.distanceFromLocation.distance_km]
                                       }
                              forKey:DISTANCE_FROM_LOCATION];
-
+    
+    CLLocation *userLocation = [LibraryAPI sharedInstance].locationManager.location;
+    if (userLocation) {
+            [outputDictionary setObject:@{
+                                          LONGITUDE : [NSNumber numberWithDouble:userLocation.coordinate.longitude],
+                                          LATITUDE: [NSNumber numberWithDouble:userLocation.coordinate.latitude]
+                                          }
+                                 forKey:COORDINATES];
         
+            //UUID
+            NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+            NSString *uuid = [NSString stringWithFormat:@"%lu", (unsigned long)[deviceId hash]];
+            [outputDictionary setObject:uuid forKey:UUID];
+    }
+
     return outputDictionary;
 }
 

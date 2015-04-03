@@ -63,12 +63,12 @@
     
     //Container View Logic  //Sets table view as initial child vc
     //set size of containerFrame
-    CGFloat belowNavigationBarY = self.navigationController.navigationBar.frame.origin.y +
-    self.navigationController.navigationBar.frame.size.height;
+    CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat belowNavigationBarY = self.navigationController.navigationBar.frame.origin.y + navBarHeight;
     CGRect containerFrame = CGRectMake(0,
                                      belowNavigationBarY,
                                      [UIScreen mainScreen].bounds.size.width,
-                                     [UIScreen mainScreen].bounds.size.height - belowNavigationBarY);
+                                     [UIScreen mainScreen].bounds.size.height - belowNavigationBarY - navBarHeight);
     self.containerViewController = [[UIViewController alloc] init];
     self.containerViewController.view.frame = containerFrame;
     [self addChildViewController:self.containerViewController];
@@ -140,7 +140,10 @@
     
     //UISlider for hour
     self.hourSlider = [HourSlider loadFromNib];
-    self.hourSlider.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, self.navigationController.navigationBar.frame.size.height);
+    self.hourSlider.frame = CGRectMake(0,
+                                       [UIScreen mainScreen].bounds.size.height - navBarHeight,
+                                       [UIScreen mainScreen].bounds.size.width,
+                                       navBarHeight);
     [self.view addSubview:self.hourSlider];
     [self.eventsTableVC setHourSlider:self.hourSlider.slider]; // Pass pointer to table view
     [self.eventsMapVC setHourSlider:self.hourSlider.slider]; //Pass pointer to Map view
@@ -419,9 +422,9 @@
                                                            self.navigationController.navigationBar.frame.origin.y +
                                                    self.datepicker.frame.size.height/2 +(datepickerOpen)*44)];
             
-            [self.hourSlider setCenter:CGPointMake(self.hourSlider.center.x,
-                                                   [UIScreen mainScreen].bounds.size.height +
-                                                   self.hourSlider.frame.size.height/2 -(datepickerOpen)*44)];
+//            [self.hourSlider setCenter:CGPointMake(self.hourSlider.center.x,
+//                                                   [UIScreen mainScreen].bounds.size.height +
+//                                                   self.hourSlider.frame.size.height/2 -(datepickerOpen)*44)];
             
             CGRect containerFrame = self.containerViewController.view.frame;
             containerFrame = CGRectMake(0,
@@ -429,7 +432,7 @@
                                         self.navigationController.navigationBar.frame.origin.y +
                                         self.datepicker.frame.size.height +(datepickerOpen)*44,
                                         containerFrame.size.width,
-                                        containerFrame.size.height - 2*(-1+2*datepickerOpen)*44
+                                        containerFrame.size.height - (-1+2*datepickerOpen)*44
                                         );
             self.containerViewController.view.frame = containerFrame;
             self.currentVC.view.frame = self.containerViewController.view.bounds;

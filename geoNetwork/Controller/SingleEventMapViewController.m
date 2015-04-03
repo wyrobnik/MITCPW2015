@@ -9,6 +9,8 @@
 #import "SingleEventMapViewController.h"
 #import "LibraryAPI.h"
 
+#define SYSTEM_VERSION_LESS_THAN(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
 @interface SingleEventMapViewController ()
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -45,15 +47,7 @@
 }
 
 -(IBAction)openInMaps:(id)sender {
-    UIAlertController *confirmOpenMapsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *openInMapsAlertAction = [UIAlertAction actionWithTitle:@"Open in Maps" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        //Alternative could to latitude and longitude with query ll=
-//        NSString *addressQueryString = [NSString stringWithFormat:@"%@, %@, %@, %@",
-//                                        self.event.street_address,
-//                                        self.event.city,
-//                                        self.event.state,
-//                                        self.event.zip];
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {   // Not using ActionSheet for now if not iOS 8. TODO!
         NSString *addressQueryString = [NSString stringWithFormat:@"%f, %f", self.event.latitude, self.event.longitude];
         addressQueryString = [addressQueryString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         NSString *addressString = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", addressQueryString];
@@ -62,14 +56,33 @@
         
         NSURL *url = [NSURL URLWithString:addressString];
         [[UIApplication sharedApplication] openURL:url];
-    }];
-    
-    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
-    
-    [confirmOpenMapsAlertController addAction:openInMapsAlertAction];
-    [confirmOpenMapsAlertController addAction:cancelButton];
-    
-    [self presentViewController:confirmOpenMapsAlertController animated:YES completion:nil];
+    } else {
+        UIAlertController *confirmOpenMapsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *openInMapsAlertAction = [UIAlertAction actionWithTitle:@"Open in Maps" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            
+            //Alternative could to latitude and longitude with query ll=
+    //        NSString *addressQueryString = [NSString stringWithFormat:@"%@, %@, %@, %@",
+    //                                        self.event.street_address,
+    //                                        self.event.city,
+    //                                        self.event.state,
+    //                                        self.event.zip];
+            NSString *addressQueryString = [NSString stringWithFormat:@"%f, %f", self.event.latitude, self.event.longitude];
+            addressQueryString = [addressQueryString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            NSString *addressString = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", addressQueryString];
+            
+            //    NSString *addressString = [NSString stringWithFormat:@"http://maps.apple.com/?ll=%f,%f", self.event.latitude, self.event.longitude];
+            
+            NSURL *url = [NSURL URLWithString:addressString];
+            [[UIApplication sharedApplication] openURL:url];
+        }];
+        
+        UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+        
+        [confirmOpenMapsAlertController addAction:openInMapsAlertAction];
+        [confirmOpenMapsAlertController addAction:cancelButton];
+        
+        [self presentViewController:confirmOpenMapsAlertController animated:YES completion:nil];
+    }
 }
 
 

@@ -13,6 +13,7 @@
 @interface EventDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *eventTitle;
 @property (weak, nonatomic) IBOutlet UITableViewCell *startTimeCell;
+@property (weak, nonatomic) IBOutlet UILabel *filterLabel;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (weak, nonatomic) IBOutlet UITextView *eventDescription;
@@ -59,7 +60,8 @@
     self.startTimeCell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", startTime, endTime];
     //    [NSDateFormatter localizedStringFromDate:self.event.startTime dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle];
 
-    
+    //Filters
+    self.filterLabel.text = [self.event.filters componentsJoinedByString:@", "];
     
     
     
@@ -119,12 +121,13 @@
             output = 60.0f;
             break;
         case 1:
+        case 2:
             output = 44.0f;
             break;
-        case 2:
+        case 3:
             output = self.eventDescription.frame.size.height;
             break;
-        case 3:
+        case 4:
             if (indexPath.row == 0)
                 output = 128.0f;
             else

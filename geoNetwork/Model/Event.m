@@ -70,6 +70,8 @@ id NSNullToNil(id object) {
             _event_id = [NSString stringWithFormat:@"%@",[jsonEvent valueForKey:EVENT_ID]];
             _title = [jsonEvent valueForKey:EVENT_TITLE];
             _description_event = NSNullToNil([jsonEvent valueForKey:EVENT_DESCRIPTION]);
+            if ([_description_event isEqualToString:@""])
+                _description_event = @"No further description available";
             _icon_url = [NSURL URLWithString:NSNullToNil([jsonEvent valueForKey:EVENT_ICON_URL])];
             _startTime = [dateFormatter dateFromString:[jsonEvent valueForKey:EVENT_START_TIME]];
             _endTime = [dateFormatter dateFromString:[jsonEvent valueForKey:EVENT_END_TIME]];

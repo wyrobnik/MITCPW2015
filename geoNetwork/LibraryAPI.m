@@ -77,7 +77,7 @@
     NSString *result = nil;
     switch (eventClass) {
     case Explore:
-        result = @"Explore";
+        result = @"Events";
         break;
     case Bookmarked:
         result = @"Bookmarked";

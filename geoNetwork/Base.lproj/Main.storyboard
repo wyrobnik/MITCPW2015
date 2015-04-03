@@ -82,6 +82,30 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Filters" id="9nt-8L-gxK">
+                                <cells>
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="7le-03-m97">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7le-03-m97" id="Nsd-Sn-UNn">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Filters" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="P3D-Gd-43x">
+                                                    <rect key="frame" x="15" y="8" width="298" height="28"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="P3D-Gd-43x" firstAttribute="top" secondItem="Nsd-Sn-UNn" secondAttribute="topMargin" id="F86-1d-BSz"/>
+                                                <constraint firstItem="P3D-Gd-43x" firstAttribute="leading" secondItem="Nsd-Sn-UNn" secondAttribute="leadingMargin" constant="7" id="S2Q-Fa-M82"/>
+                                                <constraint firstItem="P3D-Gd-43x" firstAttribute="bottom" secondItem="Nsd-Sn-UNn" secondAttribute="bottomMargin" id="X9d-Es-Rig"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="P3D-Gd-43x" secondAttribute="trailing" constant="-1" id="ckd-8i-fcq"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Description" id="vjW-0u-wFM">
                                 <cells>
                                     <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="a1j-L7-Wa5">
@@ -161,6 +185,7 @@
                         <outlet property="eventAddress" destination="hUZ-FS-g9H" id="aWJ-tp-uNb"/>
                         <outlet property="eventDescription" destination="TbS-T5-beV" id="Osa-dm-iVg"/>
                         <outlet property="eventTitle" destination="rkp-Mh-HWN" id="tYS-ag-RW9"/>
+                        <outlet property="filterLabel" destination="P3D-Gd-43x" id="xEr-Lx-Nui"/>
                         <outlet property="mapView" destination="tRN-wg-YRF" id="6s7-Bd-HDv"/>
                         <outlet property="startTimeCell" destination="FaS-Ll-mQA" id="FhD-dZ-xqA"/>
                     </connections>
