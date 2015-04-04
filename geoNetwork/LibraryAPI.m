@@ -15,6 +15,10 @@
 
 #define FILTERS_KEY @"filters"
 
+#define EVENT_ID @"eventId"  // For uid of notification
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 @interface LibraryAPI ()
 
 @property (strong, nonatomic, readwrite) NSArray *events;
@@ -124,12 +128,60 @@
     
     [self storeBookmarkedEventsPersistent];
     
+    // Notification register
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        //Register  // TODO once/move to a better place
+        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIUserNotificationTypeSound;
+        
+        UIUserNotificationSettings *mySettings =
+        [UIUserNotificationSettings settingsForTypes:types categories:nil];
+        
+        [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+        
+        // Schedule
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.fireDate = [event.startTime dateByAddingTimeInterval:-30*60];  //Production
+//        localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:10];  // Testing
+        
+        localNotification.alertBody = [NSString stringWithFormat:@"%@ starts in 30 min", event.title];
+        localNotification.applicationIconBadgeNumber = 1;
+        
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        
+        // Add uid for notifier
+        localNotification.userInfo = @{EVENT_ID : event.event_id};
+        
+        // If fireDate is after now, then add localNotification
+        if ([localNotification.fireDate compare:[NSDate date]] == NSOrderedDescending) {
+            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        }
+        // TODO handle in app notification (maybe)
+        
+    }
 }
 
 -(void)removeBookmarkedEventsObject:(Event *)event {
     [self.bookmarkedEvents removeObjectForKey:event.event_id];
  
     [self storeBookmarkedEventsPersistent];
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        // Remove notification
+        UIApplication *app = [UIApplication sharedApplication];
+        NSArray *notificationArray = [app scheduledLocalNotifications];
+        for (int i=0; i<[notificationArray count]; i++)
+        {
+            UILocalNotification* localNot = [notificationArray objectAtIndex:i];
+            NSDictionary *userInfoCurrent = localNot.userInfo;
+            NSString *uid=[NSString stringWithFormat:@"%@",[userInfoCurrent valueForKey:EVENT_ID]];
+            if ([uid isEqualToString:event.event_id])
+            {
+                //Cancelling local notification
+                [app cancelLocalNotification:localNot];
+                break;
+            }
+        }
+    }
     
 }
 
