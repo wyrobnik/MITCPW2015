@@ -82,7 +82,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Filters" id="9nt-8L-gxK">
+                            <tableViewSection headerTitle="Categories" id="9nt-8L-gxK">
                                 <cells>
                                     <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="7le-03-m97">
                                         <autoresizingMask key="autoresizingMask"/>
