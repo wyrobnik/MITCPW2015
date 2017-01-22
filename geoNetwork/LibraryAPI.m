@@ -220,6 +220,10 @@
         if (eventsOnThisDay == nil) {
             eventsOnThisDay = [NSMutableArray array];
             
+            if (!dateRepresentingThisHour) {
+                
+            }
+            
             // Use the reduced date as dictionary key to later retrieve the event list this day
             [output setObject:eventsOnThisDay forKey:dateRepresentingThisHour];
         }
